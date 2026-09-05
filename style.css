@@ -1,0 +1,644 @@
+/* ============================================================
+   Bing Gallery · iguanren.eu.org
+   纯手写样式（已移除 Bootstrap 依赖）
+   结构：Hero 第一屏 / 卡片流 / 通用弹窗 / 壁纸弹窗 / 灯箱
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* 视觉隐藏但爬虫可读（SEO 用） */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+body {
+    font-size: 18px;
+    color: #6c767d;
+    background-color: #ebf1f5;   /* 兜底背景色 */
+    min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 全站平滑滚动（滚回顶部、锚点切换更顺滑） */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 首屏 Hero：背景图随内容一起滚动（对标 wdbyte，非 fixed 视差） */
+#main {
+    background-color: #ebf1f5;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* ---------- 滚动条 ---------- */
+::-webkit-scrollbar { width: 5px; background-color: #f5f5f5; }
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #f5f5f5;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #555;
+}
+
+/* ============================================================
+   第一屏 Hero（容器垂直居中，背景为今日壁纸）
+   ============================================================ */
+.container {
+    position: relative;
+    min-height: 100vh;    /* 兜底：旧浏览器按布局视口高度 */
+    min-height: 100svh;   /* 小视口静态高度：滚动全程不随地址栏动态重排，首屏大图零缩放丝滑；地址栏收起后与下方内容区自然衔接 */
+    padding: 0;
+}
+
+/* 背景大图信息层：底部渐变遮罩 + 标题/版权（不显示日期） */
+.photo-bg-info {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 30px 18px 12px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));   /* iPhone 底部横条安全区适配 */
+    color: #fff;
+    text-align: center;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.pbi-copyright {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.72);
+    margin-top: 5px;
+    line-height: 1.4;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+footer p {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;   /* 天数数字前后留出一个空格的间距 */
+    color: rgba(0, 0, 0, 0.7);
+    transition: color 0.3s ease;
+}
+
+/* 网站底部版权区：版权+运行天数 */
+.site-footer {
+    padding: 28px 16px 40px;
+    text-align: center;
+}
+.site-footer p {
+    padding: 0;
+    margin: 0 0 7px;
+}
+.site-footer .footer-copy {
+    font-size: 13px;
+}
+.site-footer p:last-child {
+    margin-bottom: 0;
+}
+/* 小屏防丑断行：运行天数短语整体换行，绝不在单词/数字中间拆断 */
+.site-footer .fc-keep {
+    white-space: nowrap;
+}
+@media (max-width: 480px) {
+    .site-footer .footer-copy { font-size: 12px; }
+}
+
+
+/* ============================================================
+   卡片流（近 30 天壁纸，参照 wdbyte 风格）
+   ============================================================ */
+.gallery-section {
+    padding: 60px 24px 80px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);   /* 大屏 3 列，单卡更大 */
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.wp-card {
+    display: block;
+    cursor: pointer;   /* div 化后无 a 默认手型，补回 */
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.3s cubic-bezier(0.22, 0.8, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
+    animation: card-in 0.55s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;   /* 入场：上浮淡入（播完释放，hover 正常） */
+}
+/* 前 6 张阶梯延迟，视觉更灵动 */
+.wp-card:nth-child(1) { animation-delay: 0.05s; }
+.wp-card:nth-child(2) { animation-delay: 0.10s; }
+.wp-card:nth-child(3) { animation-delay: 0.15s; }
+.wp-card:nth-child(4) { animation-delay: 0.20s; }
+.wp-card:nth-child(5) { animation-delay: 0.25s; }
+.wp-card:nth-child(6) { animation-delay: 0.30s; }
+@keyframes card-in {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.wp-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
+}
+.wp-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: #e8e8e8;
+    opacity: 0;                                   /* 加载前透明（灰块占位） */
+    transition: opacity 0.45s ease, background-color 0.3s ease;
+}
+.wp-card img.loaded { opacity: 1; }               /* 加载完成淡入 */
+.wp-card img[src=""] { opacity: 1; }              /* 兜底：无图不闪 */
+.wp-card-meta { padding: 10px 12px 12px; }
+.wp-card-date {
+    display: block;
+    font-size: 12px;
+    color: #9aa0a6;
+    margin-bottom: 4px;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+/* 非中区市场标签（US/JP/DE...），挂在日期行右侧的小徽章 */
+.wp-card-region {
+    float: right;
+    font-size: 11px;
+    line-height: 1;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(255, 153, 0, 0.12);
+    color: #c77c00;
+    border: 1px solid rgba(255, 153, 0, 0.35);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+.wp-card-title {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+.gallery-empty { text-align: center; color: #999; font-size: 15px; padding: 40px 0;     transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 筛选状态条（选月份后显示） */
+.filter-bar {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    max-width: 1200px;
+    margin: 0 auto 24px;
+    padding: 12px 20px;
+    background: rgba(91, 127, 255, 0.1);
+    border: 1px solid rgba(91, 127, 255, 0.3);
+    border-radius: 12px;
+    font-size: 14px;
+    color: #2563eb;
+}
+.filter-bar.show { display: flex; }
+.filter-home {
+    border: none;
+    background: rgba(91, 127, 255, 0.18);
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.filter-home:hover { background: rgba(91, 127, 255, 0.32); }
+:root.night .filter-bar {
+    background: rgba(91, 127, 255, 0.14);
+    border-color: rgba(91, 127, 255, 0.35);
+    color: #8aa8ff;
+}
+:root.night .filter-home { background: rgba(91, 127, 255, 0.22); color: #8aa8ff; }
+
+/* 归档弹窗（历史壁纸 → 月份选择） */
+.archive-mask {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9998;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.archive-mask.show { display: flex; }
+.archive-mask.show .archive-box {
+    animation: pop-in 0.28s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+    transition: background-color 0.3s ease;
+}
+@keyframes pop-in {
+    from { opacity: 0; transform: scale(0.94) translateY(8px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.archive-box {
+    width: min(92vw, 560px);
+    max-height: 80vh;
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+}
+:root.night .archive-box { background: #232329; }
+
+.archive-head {
+    display: flex;
+    justify-content: center;   /* 标题居中 */
+    align-items: center;
+    position: relative;        /* 关闭按钮改绝对定位，不占位 */
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+:root.night .archive-head { color: #eee; border-bottom-color: rgba(255, 255, 255, 0.1); }
+
+/* 归档弹窗关闭按钮 */
+.archive-head .modal-close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    color: #666;
+    padding: 0 8px;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+}
+.archive-head .modal-close:hover { opacity: 1; color: #000; }
+:root.night .archive-head .modal-close { color: #aaa; }
+:root.night .archive-head .modal-close:hover { color: #fff; }
+
+.archive-body {
+    padding: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow-y: auto;
+}
+.archive-month {
+    border: 1px solid rgba(91, 127, 255, 0.35);
+    background: rgba(91, 127, 255, 0.08);
+    color: #2563eb;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, color 0.3s ease;
+}
+.archive-month:hover { background: rgba(91, 127, 255, 0.2); transform: translateY(-1px); }
+:root.night .archive-month {
+    border-color: rgba(91, 127, 255, 0.4);
+    background: rgba(91, 127, 255, 0.14);
+    color: #8aa8ff;
+}
+.archive-empty { width: 100%; text-align: center; color: #999; padding: 24px 0; font-size: 14px; }
+
+/* ============================================================
+   右下角悬浮按钮：夜间模式 + 回到顶部（环形进度条）
+   ============================================================ */
+.float-actions {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 9990;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.float-actions.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.float-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(30, 30, 36, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    transition: background 0.2s, transform 0.2s, color 0.3s ease;
+    line-height: 1;
+    padding: 0;
+}
+.float-btn:hover {
+    background: rgba(60, 60, 70, 0.7);
+    transform: translateY(-2px) scale(1.06);
+}
+
+/* 回到顶部：环形进度 + 箭头图标 */
+.back-top { position: relative; }
+.progress-ring {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: calc(100% + 2px);   /* 外扩 1px 盖住按钮边框，环外缘=按钮外缘，零缝隙 */
+    height: calc(100% + 2px);
+    transform: rotate(-90deg);
+}
+.progress-ring circle { fill: none; stroke-width: 3; }
+.ring-bg { stroke: rgba(255, 255, 255, 0.2); }
+.ring-fg { stroke: #5b7fff; stroke-linecap: round; transition: stroke 0.3s ease; }
+.back-top:hover .ring-fg { stroke: #7c9bff; }
+.back-top-icon {
+    display: block;
+    color: #fff;
+    animation: float-up 2s ease-in-out infinite;   /* 箭头常驻上下漂浮 */
+}
+@keyframes float-up {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+/* 夜间模式：图标悬停旋转 */
+#night-toggle svg {
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+#night-toggle:hover svg {
+    transform: rotate(120deg) scale(1.1);
+}
+
+/* 移动端悬浮按钮小一点 */
+@media (max-width: 767px) {
+    .float-actions { right: 14px; bottom: 14px; gap: 10px; }
+    .float-btn { width: 42px; height: 42px; }
+}
+
+
+/* ============================================================
+   夜间模式（html.night 覆盖规则）
+   ============================================================ */
+:root.night body {
+    background-color: #141418;
+    color: #aeb4bb;
+}
+:root.night #main { background-color: #141418; }
+
+:root.night footer p { color: rgba(255, 255, 255, 0.6); }
+:root.night .gallery-section {
+    background: rgba(20, 20, 26, 0.88);
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+:root.night .wp-card {
+    background: #232329;
+    border-color: transparent;                    /* 去白色描边，消除夜间白线 */
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+:root.night .wp-card img { background: #2a2a30; }  /* 图片加载前占位改深色，不再显浅灰块 */
+:root.night .wp-card-title { color: #ddd; }
+:root.night .wp-card-date { color: #888; }
+:root.night .wp-card-region { background: rgba(255, 179, 71, 0.12); color: #ffb347; border-color: rgba(255, 179, 71, 0.4); }
+:root.night .gallery-empty { color: #777; }
+
+:root.night .float-btn {
+    background: rgba(20, 20, 26, 0.7);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes rot { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   灯箱（卡片点击放大：4K 大图 + 右上下载/关闭 + 图下信息居中）
+   ============================================================ */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    height: 100vh;    /* 兜底：旧浏览器按布局视口高度 */
+    height: 100dvh;   /* iOS 16.4+：动态视口，地址栏收起/展开自动适配，杜绝上下黑边 */
+    background: #000;
+    z-index: 10002;
+    display: none;
+}
+.lightbox.show {
+    display: block;
+    animation: lightbox-in 0.25s ease both;
+}
+@keyframes lightbox-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+.lightbox.show .lightbox-stage {
+    animation: zoom-in 0.3s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+}
+@keyframes zoom-in {
+    from { opacity: 0.4; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.lightbox-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.lightbox-toolbar {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 10003;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.lightbox-toolbar a,
+.lightbox-toolbar button {
+    padding: 8px 20px;
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    line-height: 1.4;
+}
+.lightbox-toolbar a:hover,
+.lightbox-toolbar button:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-1px); }
+.lightbox-toolbar button { font-size: 16px; padding: 8px 14px; }
+
+.lightbox-img-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+.lightbox-loading {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 2;
+}
+.lightbox-loading .wp-spin {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: rot 0.8s linear infinite;
+    margin-bottom: 10px;
+}
+.lightbox-loading p { font-size: 13px; color: rgba(255, 255, 255, 0.8); }
+.lightbox-img-wrap img {
+    position: absolute;   /* 钉死四边：与弹窗 img 同策略，绕开 iOS 高度链差异 */
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* 铺满整个屏幕（对标 wdbyte） */
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+/* 图下信息区：固定底部居中，日期·标题同一行 */
+.lightbox-info {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: #fff;
+    width: min(92vw, 960px);
+    pointer-events: none;   /* 不挡图片点击翻页 */
+}
+.lb-line {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+}
+/* 选择器用 # ：HTML 里 lb-date/lb-title 是 id（lb-line/lb-sep 才是 class），
+   原写 .lb-date 匹配不到任何元素，样式整段失效（长标题会把信息行撑爆） */
+#lb-date {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+    white-space: nowrap;
+    letter-spacing: 1px;
+}
+.lb-sep { color: rgba(255, 255, 255, 0.45); }
+#lb-title {
+    font-size: 17px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70vw;
+}
+.lb-copyright {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 6px;
+}
+
+/* ============================================================
+   响应式：平板 / 手机
+   ============================================================ */
+@media (max-width: 1199px) {
+    body { min-height: 600px; }
+    h1 { font-size: 24px; }
+    p { font-size: 14px; }
+    .pbi-copyright { font-size: 11px; }
+}
+
+@media (max-width: 991px) {
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+}
+
+@media (max-width: 767px) {
+    .gallery-section { padding: 40px 12px 60px; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .wp-card-title { font-size: 13px; }
+    .photo-bg-info { padding: 20px 12px 10px; }
+    .pbi-copyright { font-size: 11px; margin-top: 3px; }
+    .lightbox-toolbar { top: 12px; right: 12px; gap: 8px; }
+    .lightbox-toolbar a { padding: 6px 14px; font-size: 12px; }
+    .lightbox-toolbar button { font-size: 14px; padding: 6px 12px; }
+    .lightbox-info { bottom: 16px; }
+    #lb-title { font-size: 15px; }
+}
+
+/* ============================================================
+   尊重系统"减弱动态效果"设置：动画/过渡几乎立即完成
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    /* 按钮入场 + hover 全部禁用 */
+    .wp-card, .lightbox-stage, .archive-box {
+        animation: none !important;
+        transition: none !important;
+    }
+}
