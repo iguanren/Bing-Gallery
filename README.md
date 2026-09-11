@@ -1,47 +1,57 @@
-# Bing Gallery（4K 高清美图壁纸画廊）
+**English** | [中文简体](README.zh-CN.md)
 
-[![壁纸数据自动更新](https://github.com/iguanren/Bing-Gallery/actions/workflows/wallpaper.yml/badge.svg)](https://github.com/iguanren/Bing-Gallery/actions/workflows/wallpaper.yml)
-[![归档壁纸](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Figuanren%2FBing-Gallery%40main%2Fdata.json&query=%24.count&label=%E5%BD%92%E6%A1%A3%E5%A3%81%E7%BA%B8&color=orange&maxAge=3600)](https://iguanren.eu.org/)
-[![演示网站](https://img.shields.io/badge/%E6%BC%94%E7%A4%BA%E7%BD%91%E7%AB%99-iguanren.eu.org-brightgreen)](https://iguanren.eu.org/)
+# Bing Gallery
+
+> A personal gallery of Bing's daily wallpapers — 4K, watermark-free, fully archived.
+
+[![Wallpaper data auto-update](https://github.com/iguanren/Bing-Gallery/actions/workflows/wallpaper.yml/badge.svg)](https://github.com/iguanren/Bing-Gallery/actions/workflows/wallpaper.yml)
+[![Archived wallpapers](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Figuanren%2FBing-Gallery%40main%2Fdata.json&query=%24.count&label=Archived&color=orange&maxAge=3600)](https://iguanren.eu.org/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-iguanren.eu.org-brightgreen)](https://iguanren.eu.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-![今日必应壁纸](https://cn.bing.com/th?id=OHR.FrenchRivieraVillage_ZH-CN2888811422_1920x1080.jpg)
+![Today's Bing wallpaper](https://cn.bing.com/th?id=OHR.FrenchRivieraVillage_ZH-CN2888811422_1920x1080.jpg)
 
-每日自动收录必应（Bing）官方每日高清美图，4K 超清无水印免费下载，历史壁纸按月归档一键回看。纯静态站点、零图片存储（图片热链必应官方 CDN）。
+Bing releases a different official HD wallpaper every day, then quietly swaps it out the next. This site does one simple thing: keeps them.
 
-演示站点：[iguanren.eu.org](https://iguanren.eu.org/) · [About](https://iguanren.eu.org/about.html)
+Daily auto-collection · 4K watermark-free downloads · full monthly archive · pure static site with zero image storage (all images hotlinked from Bing's official CDN).
 
-## 功能
+🔗 **Live demo**: [iguanren.eu.org](https://iguanren.eu.org/) · [About](https://iguanren.eu.org/about.html)
 
-- **每日自动更新**：GitHub Actions 每日 3 次抓取 15 个市场，自动合并归档
-- **首屏整屏大图**：今日壁纸铺满首屏，中区优先、美区兜底
-- **卡片流 + 灯箱**：近 30 天壁纸卡片流，点击预览 4K 原图，支持键盘翻页与点击左右区域翻页
-- **历史归档**：点 Archive 按月浏览，数据全量留存、永不删除
-- **双语 About 页**：中英双语一键切换，不刷新，介绍站点由来、数据说明与版权
-- **体验细节**：夜间模式、移动端整屏适配（含 iPhone 安全区）、SEO 全套
+---
 
-## 本地调试
+## ✨ Features
+
+- **Daily auto-update** — GitHub Actions pulls 15 markets three times a day, merging and archiving automatically
+- **Full-screen hero** — today's wallpaper fills the first screen, China region first with US fallback
+- **Card flow + lightbox** — the 30 most recent wallpapers; click for a 4K preview, flip with arrow keys or by tapping the screen edges
+- **Monthly archive** — hit Archive to browse by month; everything is kept forever
+- **Bilingual About page** — instant language switch, no reload
+- **The details** — night mode, mobile full-screen adaptation (incl. iPhone safe area), full SEO setup
+
+## 🛠 Local Development
 
 ```bash
 pip install requests
-python3 scripts/fetch_bing.py        # 抓取 + 更新 data.json
-python3 -m http.server 8899          # 本地预览 http://localhost:8899
+python3 scripts/fetch_bing.py        # fetch + update data.json
+python3 -m http.server 8899          # preview at http://localhost:8899
 ```
 
-## 部署
+## 🚀 Deployment
 
-纯静态站点，无构建：EdgeOne Pages 连接仓库、绑定域名即用。
+Pure static site, no build step. Connect the repository to EdgeOne Pages and bind your domain — done.
 
-## 许可与免责
+---
 
-**源码**采用 [MIT 协议](LICENSE) 开源 —— 欢迎学习、修改、部署，商用也没有问题。
+## 📄 License & Disclaimer
 
-**数据与图片另当别论** —— MIT 协议仅适用于本项目的**源码**，不覆盖采集到的壁纸数据。本项目采集的壁纸数据均来自必应（Bing）官方，图片热链官方 CDN，版权归 **Microsoft / 必应 / 原作者** 所有，仅供个人收藏与展示之用。
+**Source code** is released under the [MIT License](LICENSE) — free to learn from, modify, deploy, and even use commercially.
 
-⚠️ **任何人若将采集到的壁纸数据用于商业场景**（如搭建收费壁纸站、二次分发、嵌入商业产品等），**须自行获得版权方的合法授权，并自行承担由此产生的全部法律责任，与本项目作者无关。**
+**Data and images are a different matter** — the MIT License covers the **source code only**, not the wallpaper data. Wallpaper data is collected from Bing's official API and the images are hotlinked from Bing's official CDN. Copyright belongs to **Microsoft / Bing / their original authors**. This project is for personal collection and display only.
 
-> 由于维护升级过程中部分数据丢失，最新数据从 2026 年 8 月开始重新抓取并进行归档。
+> ⚠️ **Anyone using the collected wallpaper data for commercial purposes** (building a paid wallpaper service, redistributing the images, embedding them in commercial products, etc.) **must obtain authorization from the copyright holders, and bears full legal responsibility for their own actions. The author of this project assumes no liability whatsoever.**
 
-## 反馈
+> ℹ️ Some data was lost during a maintenance upgrade; the latest data has been re-collected and archived since August 2026.
 
-有建议欢迎开 [GitHub Issue](https://github.com/iguanren/Bing-Gallery/issues)，或邮件 [458091312@qq.com](mailto:458091312@qq.com)。
+## 💬 Feedback
+
+Suggestions are welcome — open a [GitHub Issue](https://github.com/iguanren/Bing-Gallery/issues).

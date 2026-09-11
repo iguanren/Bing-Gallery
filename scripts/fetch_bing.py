@@ -135,8 +135,10 @@ ABOUT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file
 OG_FILES = [INDEX_FILE, ABOUT_FILE]   # 两页的分享图都跟随当天壁纸
 OG_RE = re.compile(r'(<meta (?:property="og:image"|name="twitter:image") content=")[^"]*(" />)')
 README_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "README.md")
-# README 顶部「今日壁纸」图：靠 alt 文本锚定，改 alt 文案时记得同步改正则
-README_IMG_RE = re.compile(r'(!\[今日必应壁纸\]\()([^)]+)(\))')
+README_ZH_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "README.zh-CN.md")
+README_FILES = [README_FILE, README_ZH_FILE]   # 中英双语 README，今日壁纸图一起更新
+# README 顶部「今日壁纸」图：锚定 markdown 图片 + 必应直链（中英两版 alt 文案不同，故不绑 alt）
+README_IMG_RE = re.compile(r'(!\[[^\]]*\]\()(https://cn\.bing\.com/[^)]+)(\))')
 
 
 def pick_hero_item(items: list[dict], today: str) -> dict | None:
@@ -183,29 +185,33 @@ def update_og_image(item: dict, dry_run: bool = False) -> bool:
 
 
 def update_readme_image(item: dict, dry_run: bool = False) -> bool:
-    """把 README.md 顶部的「今日壁纸」图更新为当天 hero 图（1920 热链，不用 4K 以免 README 加载过重）。
+    """把中英两版 README 顶部的「今日壁纸」图更新为当天 hero 图（1920 热链，不用 4K 以免 README 加载过重）。
     每天跟随当天壁纸自动换；URL 每日不同，也能绕开 GitHub camo 图片代理的长缓存。"""
     if not item or not item.get("urlbase"):
         print("  readme: 无 urlbase，跳过今日壁纸图更新", file=sys.stderr)
         return False
     new_url = f"https://cn.bing.com{item['urlbase']}_1920x1080.jpg"
-    try:
-        with open(README_FILE, encoding="utf-8") as f:
-            md = f.read()
-    except Exception as e:
-        print(f"  readme: 读取 README.md 失败 {e}", file=sys.stderr)
-        return False
-    new_md, n = README_IMG_RE.subn(lambda m: m.group(1) + new_url + m.group(3), md)
-    if n == 0:
-        print("  readme: 未找到「今日必应壁纸」图片标记，跳过", file=sys.stderr)
-        return False
-    if n != 1:
-        print(f"  readme: 匹配到 {n} 处（预期 1）", file=sys.stderr)
-    if not dry_run:
-        with open(README_FILE, "w", encoding="utf-8") as f:
-            f.write(new_md)
-    print(f"  readme: 今日壁纸图已更新为 {new_url}")
-    return True
+    any_ok = False
+    for path in README_FILES:
+        name = os.path.basename(path)
+        try:
+            with open(path, encoding="utf-8") as f:
+                md = f.read()
+        except Exception as e:
+            print(f"  readme: 读取 {name} 失败 {e}", file=sys.stderr)
+            continue
+        new_md, n = README_IMG_RE.subn(lambda m: m.group(1) + new_url + m.group(3), md)
+        if n == 0:
+            print(f"  readme: {name} 未找到今日壁纸图，跳过", file=sys.stderr)
+            continue
+        if n != 1:
+            print(f"  readme: {name} 匹配到 {n} 处（预期 1）", file=sys.stderr)
+        if not dry_run:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(new_md)
+        print(f"  readme: {name} 今日壁纸图已更新为 {new_url}")
+        any_ok = True
+    return any_ok
 
 
 def main():
