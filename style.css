@@ -97,7 +97,7 @@ footer p {
     transition: color 0.3s ease;
 }
 
-/* 网站底部版权区：版权+运行天数 */
+/* 网站底部：导航行（Home - Archive - About）+ 版权行 */
 .site-footer {
     padding: 28px 16px 40px;
     text-align: center;
@@ -116,13 +116,23 @@ footer p {
 .site-footer .fc-keep {
     white-space: nowrap;
 }
-/* About 入口：低调可点，继承版权行文字色 + 半透明下划线（自动适配夜间模式） */
-.site-footer .footer-about {
-    color: inherit;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+/* footer 导航行：Home - Archive - About */
+.site-footer .footer-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 13px;
 }
+.site-footer .footer-nav-link {
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.2s ease;
+}
+.site-footer .footer-nav-link:hover { opacity: 1; }
+.site-footer .footer-nav-sep { opacity: 0.4; }
 @media (max-width: 480px) {
     .site-footer .footer-copy { font-size: 12px; }
 }
@@ -444,6 +454,7 @@ footer p {
 :root.night #main { background-color: #141418; }
 
 :root.night footer p { color: rgba(255, 255, 255, 0.6); }
+:root.night .site-footer .footer-nav { color: rgba(255, 255, 255, 0.6); }
 :root.night .gallery-section {
     background: rgba(20, 20, 26, 0.88);
     border-top-color: rgba(255, 255, 255, 0.08);
