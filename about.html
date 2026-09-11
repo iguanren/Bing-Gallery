@@ -112,19 +112,27 @@
     max-width: 900px;
 }
 .about-section p:last-child { margin-bottom: 0; }
-/* 卡片内轻量提示行：不用大卡片包，一道细竖线 + 小字 */
+/* 提示行：三角形警示图标 + 小字 */
 .about-section .about-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
     font-size: 13.5px;
     color: #949ea5;
     line-height: 1.7;
-    border-left: 3px solid rgba(91, 127, 255, 0.3);
-    padding-left: 11px;
     margin: 14px 0 0;
+}
+.about-note svg {
+    flex: none;
+    width: 15px;
+    height: 15px;
+    margin-top: 3px;
+    color: #dfa14a;   /* 琥珀色：警示语义 */
 }
 :root.night .about-section .about-note {
     color: #838b92;
-    border-left-color: rgba(91, 127, 255, 0.4);
 }
+:root.night .about-note svg { color: #c99a55; }
 .about-section ul {
     margin: 0;
     padding: 0;
@@ -225,11 +233,11 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
         <h2 class="i18n-zh">这个网站有什么用</h2>
         <div class="i18n-en">
             <p>The homepage opens on today's wallpaper — China market first, then US — so what you see each day is always the latest. Below it, a card flow shows the 30 most recent wallpapers; anything older is archived. Hit Archive to browse by month. In the lightbox, arrow keys flip through images, and you can also tap the left or right side of the screen. See one you like? Download the full-resolution original straight to your device.</p>
-            <p class="about-note">One thing to note: some data was lost during maintenance along the way, so the latest data started accumulating again from August 2026.</p>
+            <p class="about-note"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg><span>One thing to note: some data was lost during the maintenance upgrade, so the latest data began to be re-scraped and archived from August 2026.</span></p>
         </div>
         <div class="i18n-zh">
             <p>我把每天的新壁纸放在网站首屏，优先显示中区图片，其次是美区图片——所以你每天打开看到的，都是当天最新的壁纸数据。首屏下方是一条卡片流，展示最近的 30 张壁纸。更早的图片做了归档，点 Archive 可以按月份浏览。灯箱点开后，支持键盘左右翻页，也支持点击屏幕左/右区域翻页浏览。看到喜欢的图片，可以直接下载原图到你的设备。</p>
-            <p class="about-note">需要注意的是：由于维护过程中部分数据丢失，所以最新数据从 2026 年 8 月开始重新积累。</p>
+            <p class="about-note"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg><span>需要注意的是：由于维护升级过程中部分数据丢失，所以最新数据从 2026 年 8 月开始重新抓取并进行归档。</span></p>
         </div>
     </section>
 
