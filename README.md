@@ -11,24 +11,30 @@
 
 ![Today's Bing wallpaper](https://cn.bing.com/th?id=OHR.FrenchRivieraVillage_ZH-CN2888811422_1920x1080.jpg)
 
-Bing releases a different official HD wallpaper every day, then quietly swaps it out the next. This site does one simple thing: keeps them.
+Bing releases a different official HD wallpaper every day, then quietly swaps it out the next. This project does one simple thing: keeps them.
 
-Daily auto-collection · 4K watermark-free downloads · full monthly archive · pure static site with zero image storage (all images hotlinked from Bing's official CDN).
+Today's pick on a full-screen hero · card flow with a 4K lightbox · full monthly archive · pure static site with zero image storage (all images hotlinked from Bing's official CDN).
 
 🔗 **Live demo**: [iguanren.eu.org](https://iguanren.eu.org/) · [About](https://iguanren.eu.org/about.html)
 
 ---
 
+## 📖 Background
+
+This project grew out of an old habit. Back when I was running a blog, I liked using Bing's daily wallpapers as page backgrounds — but Bing swaps each one out the next day, which makes them a pain to find again. So I decided to collect them, archive them properly, and keep them around for a quiet browse now and then.
+
 ## ✨ Features
 
-- **Daily auto-update** — GitHub Actions pulls 15 markets three times a day, merging and archiving automatically
+- **Daily auto-update** — GitHub Actions pulls from 15 markets three times a day and runs a full link health check each time; dead images are replaced automatically, so nothing gets lost
 - **Full-screen hero** — today's wallpaper fills the first screen, China region first with US fallback
-- **Card flow + lightbox** — the 30 most recent wallpapers; click for a 4K preview, flip with arrow keys or by tapping the screen edges
-- **Monthly archive** — hit Archive to browse by month; everything is kept forever
+- **Card flow + lightbox** — the 30 most recent wallpapers; click for a 4K preview, flip with the arrow keys or by tapping the screen edges
+- **Monthly archive** — hit Archive to browse by month; everything is kept in full and never deleted
 - **Bilingual About page** — instant language switch, no reload
 - **The details** — night mode, mobile full-screen adaptation (incl. iPhone safe area), full SEO setup
 
-## 🛠 Local Development
+## 🚀 Quick Start
+
+Pure static site — no build step required.
 
 ```bash
 pip install requests
@@ -36,9 +42,9 @@ python3 scripts/fetch_bing.py        # fetch + update data.json
 python3 -m http.server 8899          # preview at http://localhost:8899
 ```
 
-## 🚀 Deployment
+## 📦 Deployment
 
-Pure static site, no build step. Connect the repository to EdgeOne Pages and bind your domain — done.
+Connect the repository to EdgeOne Pages, bind your domain, and you're done.
 
 ---
 
@@ -50,7 +56,7 @@ Pure static site, no build step. Connect the repository to EdgeOne Pages and bin
 
 > ⚠️ **Anyone using the collected wallpaper data for commercial purposes** (building a paid wallpaper service, redistributing the images, embedding them in commercial products, etc.) **must obtain authorization from the copyright holders, and bears full legal responsibility for their own actions. The author of this project assumes no liability whatsoever.**
 
-> ℹ️ Some data was lost during a maintenance upgrade; the latest data has been re-collected and archived since August 2026.
+> ℹ️ Some data was lost during a maintenance upgrade; the latest data has been re-scraped and archived since August 2026.
 
 ## 💬 Feedback
 
