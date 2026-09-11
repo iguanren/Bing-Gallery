@@ -32,7 +32,7 @@
   }
   </script>
   <link rel="shortcut icon" href="/favicon.svg?v=20260903a" />
-  <link rel="stylesheet" href="style.css?v=20260911b">
+  <link rel="stylesheet" href="style.css?v=20260911c">
 </head>
 
 <body>
@@ -42,6 +42,13 @@
   <!-- 首屏 Hero：纯背景大图 + 图内底部悬浮信息（仅版权描述，沉浸模式无标题无日期） -->
   <div id="main" class="container">
     <div class="photo-bg-info">
+      <nav class="pbi-nav">
+        <a href="/" id="pbi-home" class="pbi-nav-link">Home</a>
+        <span class="pbi-nav-sep">-</span>
+        <a href="#" id="pbi-archive" class="pbi-nav-link">Archive</a>
+        <span class="pbi-nav-sep">-</span>
+        <a href="/about.html" class="pbi-nav-link">About</a>
+      </nav>
       <div class="pbi-copyright"></div>
     </div>
   </div>
@@ -67,13 +74,6 @@
   </div>
 
   <footer class="site-footer">
-    <nav class="footer-nav">
-      <a href="/" id="footer-home" class="footer-nav-link">Home</a>
-      <span class="footer-nav-sep">-</span>
-      <a href="#" id="footer-archive" class="footer-nav-link">Archive</a>
-      <span class="footer-nav-sep">-</span>
-      <a href="/about.html" class="footer-nav-link">About</a>
-    </nav>
     <p class="footer-copy">&copy; 2019 - <span id="year">2026</span> Bing Gallery <span class="fc-keep">Running For <a id="days" rel="nofollow">0</a> Days</span></p>
   </footer>
 
@@ -667,12 +667,12 @@ document.getElementById("lb-download").addEventListener("click", function () {
  * ⑨ 全局事件绑定
  * ============================================================ */
 
-/* footer 导航行：Home 回首页 / Archive 开归档弹窗 */
-document.getElementById("footer-home").addEventListener("click", function (e) {
+/* 首屏导航行：Home 回首页 / Archive 开归档弹窗 */
+document.getElementById("pbi-home").addEventListener("click", function (e) {
   e.preventDefault();
   goHome();
 });
-document.getElementById("footer-archive").addEventListener("click", function (e) {
+document.getElementById("pbi-archive").addEventListener("click", function (e) {
   e.preventDefault();
   openArchive();
 });
