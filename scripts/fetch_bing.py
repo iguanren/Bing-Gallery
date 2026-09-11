@@ -131,7 +131,12 @@ def health_check(items: list[dict]) -> tuple[int, int]:
 
 DATA_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data.json")
 INDEX_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "index.html")
+ABOUT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "about.html")
+OG_FILES = [INDEX_FILE, ABOUT_FILE]   # 两页的分享图都跟随当天壁纸
 OG_RE = re.compile(r'(<meta (?:property="og:image"|name="twitter:image") content=")[^"]*(" />)')
+README_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "README.md")
+# README 顶部「今日壁纸」图：靠 alt 文本锚定，改 alt 文案时记得同步改正则
+README_IMG_RE = re.compile(r'(!\[今日必应壁纸\]\()([^)]+)(\))')
 
 
 def pick_hero_item(items: list[dict], today: str) -> dict | None:
@@ -147,29 +152,59 @@ def pick_hero_item(items: list[dict], today: str) -> dict | None:
 
 
 def update_og_image(item: dict, dry_run: bool = False) -> bool:
-    """把 index.html 的 og:image / twitter:image 更新为当天 hero 图的必应直链（社交分享卡片图）。
+    """把 index.html / about.html 的 og:image / twitter:image 更新为当天 hero 图的必应直链（社交分享卡片图）。
     每天跟随当天壁纸自动换，分享到微信/朋友圈/推特时预览图应景。"""
     if not item or not item.get("urlbase"):
         print("  og: 无 urlbase，跳过分享图更新", file=sys.stderr)
         return False
     new_url = f"https://cn.bing.com{item['urlbase']}_UHD.jpg"
+    any_ok = False
+    for path in OG_FILES:
+        name = os.path.basename(path)
+        try:
+            with open(path, encoding="utf-8") as f:
+                html = f.read()
+        except Exception as e:
+            print(f"  og: 读取 {name} 失败 {e}", file=sys.stderr)
+            continue
+        n_before = len(OG_RE.findall(html))
+        new_html, n = OG_RE.subn(lambda m: m.group(1) + new_url + m.group(2), html)
+        if n == 0:
+            print(f"  og: {name} 未找到 og:image 标签（现有 {n_before} 处）", file=sys.stderr)
+            continue
+        if n != 2:
+            print(f"  og: {name} 匹配到 {n} 处（预期 2：og:image + twitter:image）", file=sys.stderr)
+        if not dry_run:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(new_html)
+        print(f"  og: {name} 分享图已更新为 {new_url}")
+        any_ok = True
+    return any_ok
+
+
+def update_readme_image(item: dict, dry_run: bool = False) -> bool:
+    """把 README.md 顶部的「今日壁纸」图更新为当天 hero 图（1920 热链，不用 4K 以免 README 加载过重）。
+    每天跟随当天壁纸自动换；URL 每日不同，也能绕开 GitHub camo 图片代理的长缓存。"""
+    if not item or not item.get("urlbase"):
+        print("  readme: 无 urlbase，跳过今日壁纸图更新", file=sys.stderr)
+        return False
+    new_url = f"https://cn.bing.com{item['urlbase']}_1920x1080.jpg"
     try:
-        with open(INDEX_FILE, encoding="utf-8") as f:
-            html = f.read()
+        with open(README_FILE, encoding="utf-8") as f:
+            md = f.read()
     except Exception as e:
-        print(f"  og: 读取 index.html 失败 {e}", file=sys.stderr)
+        print(f"  readme: 读取 README.md 失败 {e}", file=sys.stderr)
         return False
-    n_before = len(OG_RE.findall(html))
-    new_html, n = OG_RE.subn(lambda m: m.group(1) + new_url + m.group(2), html)
+    new_md, n = README_IMG_RE.subn(lambda m: m.group(1) + new_url + m.group(3), md)
     if n == 0:
-        print(f"  og: index.html 未找到 og:image 标签（现有 {n_before} 处）", file=sys.stderr)
+        print("  readme: 未找到「今日必应壁纸」图片标记，跳过", file=sys.stderr)
         return False
-    if n != 2:
-        print(f"  og: 匹配到 {n} 处（预期 2：og:image + twitter:image）", file=sys.stderr)
+    if n != 1:
+        print(f"  readme: 匹配到 {n} 处（预期 1）", file=sys.stderr)
     if not dry_run:
-        with open(INDEX_FILE, "w", encoding="utf-8") as f:
-            f.write(new_html)
-    print(f"  og: 分享图已更新为 {new_url}")
+        with open(README_FILE, "w", encoding="utf-8") as f:
+            f.write(new_md)
+    print(f"  readme: 今日壁纸图已更新为 {new_url}")
     return True
 
 
@@ -241,6 +276,7 @@ def main():
     # 社交分享图（og:image / twitter:image）跟随当天 hero 图自动更新（必应直链，UHD 4K）
     if hero_item:
         update_og_image(hero_item, dry_run=args.dry_run)
+        update_readme_image(hero_item, dry_run=args.dry_run)
 
     # 直接写入（hero 每次注入新字段 + updated 时间戳必然变化，"跳过写入"判断永远不触发，
     # 纯死逻辑已清除；workflow 每次运行都会揉平提交，不存在空提交问题）

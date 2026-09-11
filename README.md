@@ -4,9 +4,11 @@
 [![归档壁纸](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Figuanren%2FBing-Gallery%40main%2Fdata.json&query=%24.count&label=%E5%BD%92%E6%A1%A3%E5%A3%81%E7%BA%B8&color=orange&maxAge=3600)](https://iguanren.eu.org/)
 [![演示网站](https://img.shields.io/badge/%E6%BC%94%E7%A4%BA%E7%BD%91%E7%AB%99-iguanren.eu.org-brightgreen)](https://iguanren.eu.org/)
 
+![今日必应壁纸](https://cn.bing.com/th?id=OHR.FrenchRivieraVillage_ZH-CN2888811422_1920x1080.jpg)
+
 每日自动收录必应（Bing）官方每日高清美图，4K 超清无水印免费下载，历史壁纸按月归档一键回看。纯静态站点、零图片存储（图片热链必应官方 CDN）。
 
-演示站点：[iguanren.eu.org](https://iguanren.eu.org/)
+演示站点：[iguanren.eu.org](https://iguanren.eu.org/) · [About](https://iguanren.eu.org/about.html)
 
 ## 功能
 
