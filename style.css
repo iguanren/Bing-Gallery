@@ -113,7 +113,7 @@ footer p {
     align-items: center;
     justify-content: center;
     gap: 4px;   /* 天数数字前后留出一个空格的间距 */
-    color: rgba(0, 0, 0, 0.7);
+    color: rgba(0, 0, 0, 0.85);
     transition: color 0.3s ease;
 }
 
