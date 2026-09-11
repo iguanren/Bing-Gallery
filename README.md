@@ -29,8 +29,25 @@ This project grew out of an old habit. Back when I was running a blog, I liked u
 - **Full-screen hero** — today's wallpaper fills the first screen, China region first with US fallback
 - **Card flow + lightbox** — the 30 most recent wallpapers; click for a 4K preview, flip with the arrow keys or by tapping the screen edges
 - **Monthly archive** — hit Archive to browse by month; everything is kept in full and never deleted
-- **Bilingual About page** — instant language switch, no reload
+- **Fully bilingual** — English / 中文 across the whole site: nav, filter bar, archive, footer and the About page, switched instantly with no reload
+- **Genuinely English content** — in English mode, wallpaper titles and copyright lines come from Bing's English-market data for the *same* image (matched by image fingerprint), not machine translation
 - **The details** — night mode, mobile full-screen adaptation (incl. iPhone safe area), full SEO setup
+
+## 🗂 Project Structure
+
+No build step — plain static files, split by responsibility:
+
+```
+index.html              main page (markup + SEO meta; all logic lives in the JS files)
+about.html              About page
+style.css               all styles for both pages
+site.js                 shared logic: language / night mode / floating buttons / uptime
+gallery.js              main page: data loading, card flow, monthly archive, lightbox
+about.js                About page: today's wallpaper, bilingual captions
+data.json               all wallpaper data (auto-generated)
+scripts/fetch_bing.py   daily fetch + link health check
+.github/workflows/      scheduled auto-update
+```
 
 ## 🚀 Quick Start
 

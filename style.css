@@ -688,3 +688,203 @@ html[lang^="zh"] .lang-toggle .lang-alt-en { display: inline; }
         transition: none !important;
     }
 }
+
+
+/* ============ About 页专属样式（复用主站 style.css 的基础配色与夜间模式） ============ */
+/* 全宽白色内容带：与主页卡片流区（.gallery-section）同款，
+   让 footer 落在灰色 body 底上，形成「白色内容 + 灰色页脚」的层次区分 */
+.about-band {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+.about-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 44px 24px 28px;
+}
+
+/* —— 标题区（顶部语言切换器已移除，主副标题整体居中） —— */
+.about-head {
+    margin-bottom: 28px;
+    text-align: center;
+}
+/* —— 返回首页（页面底部文字链接） —— */
+.about-back {
+    display: inline-block;
+    color: rgba(91, 127, 255, 0.9);
+    font-size: 14px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.about-back:hover { opacity: 0.65; }
+:root.night .about-back { color: #8aa8ff; }
+.about-head h1 {
+    font-size: 34px;
+    color: #333;
+    margin: 0 0 16px;
+    letter-spacing: 0.5px;
+    line-height: 1.15;
+}
+.about-head .about-sub {
+    font-size: 15px;
+    color: #8a949b;
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+/* —— 语言切换已统一到右下角悬浮按钮（与主站一致），此处不再需要胶囊样式 —— */
+
+/* —— 今日壁纸展示：宽度与正文对齐，图上叠图标 + 版权描述 —— */
+.about-hero {
+    position: relative;
+    margin: 0 0 34px;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: rgba(0, 0, 0, 0.05);   /* 图片加载前占位，避免跳动 */
+}
+.about-hero img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;   /* 加载完成淡入，不突兀弹出 */
+}
+.about-hero img.is-loaded { opacity: 1; }
+.about-hero-cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 24px 16px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 12.5px;
+    text-align: center;
+    pointer-events: none;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* —— 内容区块：无卡片、无分隔线，纯留白区隔 —— */
+.about-section {
+    margin-bottom: 34px;
+}
+.about-section:last-of-type {
+    margin-bottom: 8px;
+}
+.about-section h2 {
+    position: relative;
+    font-size: 17px;
+    color: #333;
+    margin: 0 0 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+    padding-left: 13px;
+}
+.about-section h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 16px;
+    border-radius: 2px;
+    background: rgba(91, 127, 255, 0.85);
+}
+.about-section p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #6c767d;
+    margin: 0 0 10px;
+}
+/* 正文首行缩进两字符（中文排版习惯）；提示行独立成行，不缩进 */
+.about-section p:not(.about-note) {
+    text-indent: 2em;
+}
+.about-section p:last-child { margin-bottom: 0; }
+/* 提示行：三角形警示图标 + 小字 */
+.about-section .about-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13.5px;
+    color: #949ea5;
+    line-height: 1.7;
+    margin: 14px 0 0;
+}
+.about-note svg {
+    flex: none;
+    width: 15px;
+    height: 15px;
+    margin-top: 3px;
+    color: #dfa14a;   /* 琥珀色：警示语义 */
+}
+:root.night .about-section .about-note {
+    color: #838b92;
+}
+:root.night .about-note svg { color: #c99a55; }
+.about-section ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.about-section li {
+    position: relative;
+    font-size: 15px;
+    line-height: 1.75;
+    color: #6c767d;
+    padding-left: 16px;
+    margin-bottom: 9px;
+}
+.about-section li:last-child { margin-bottom: 0; }
+.about-section li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 0.72em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(91, 127, 255, 0.6);
+}
+.about-section li strong { color: #4a5459; font-weight: 600; }
+.about-section a {
+    color: rgba(91, 127, 255, 0.95);
+    text-decoration: none;
+}
+.about-section a:hover { text-decoration: underline; }
+.about-foot {
+    text-align: center;
+    padding: 12px 0 6px;
+}
+
+/* —— 夜间模式 —— */
+:root.night .about-band {
+    background: rgba(20, 20, 26, 0.88);
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+:root.night .about-head h1 { color: #e8ebee; }
+:root.night .about-head .about-sub { color: #7d868d; }
+:root.night .about-section h2 { color: #e8ebee; }
+:root.night .about-section p,
+:root.night .about-section li { color: #aeb4bb; }
+:root.night .about-section li strong { color: #d5dade; }
+
+@media (max-width: 900px) {
+    .about-section { margin-bottom: 26px; }
+}
+/* 手机端：标题区已全局居中，此处无需重复设置 */
+@media (max-width: 480px) {
+    .about-wrap { padding: 30px 14px 20px; }
+    .about-head h1 { font-size: 26px; }
+    .about-section p, .about-section li { font-size: 14px; }
+    .about-hero { border-radius: 12px; margin-bottom: 26px; }
+    .about-hero-cap { font-size: 11.5px; padding: 18px 12px 10px; }
+}

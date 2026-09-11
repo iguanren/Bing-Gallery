@@ -87,6 +87,33 @@ window.BGSite = (function () {
     if (y) y.textContent = new Date().getFullYear();
   }
 
+  /* ---------- 同图多市场工具（主站取英文标题/版权、About 页取英文版权，共用同一套算法） ---------- */
+  var EN_REGIONS = { US: 1, GB: 1, AU: 1, IN: 1, CA: 1, NZ: 1, SG: 1 }; // 英文市场
+  var FP_EN = {}; // 图片指纹 → 英文市场条目
+
+  /* 图片指纹：从 urlbase 取 OHR.xxx 段；同一天同一张图在各市场是同一指纹 */
+  function fpOf(item) {
+    var m = /id=(OHR\.[^_]+)/.exec((item && item.urlbase) || "");
+    return m ? m[1] : null;
+  }
+
+  /* 构建「指纹 → 英文条目」映射，传入壁纸数组 */
+  function buildFpMap(list) {
+    FP_EN = {};
+    for (var i = 0; i < (list || []).length; i++) {
+      var it = list[i];
+      var fp = fpOf(it);
+      if (fp && EN_REGIONS[it.region] && !FP_EN[fp]) FP_EN[fp] = it;
+    }
+    return FP_EN;
+  }
+
+  /* 同一张图的英文市场条目（没有则 null） */
+  function enVariant(item) {
+    var fp = fpOf(item);
+    return fp && FP_EN[fp] && FP_EN[fp] !== item ? FP_EN[fp] : null;
+  }
+
   /* ---------- 语言 ---------- */
   function readLang() {
     try {
@@ -135,6 +162,9 @@ window.BGSite = (function () {
     setLang: setLang,
     applyNight: applyNight,
     renderUptime: renderUptime,
+    fpOf: fpOf,
+    buildFpMap: buildFpMap,
+    enVariant: enVariant,
     getLang: function () { return lang; }
   };
 })();
