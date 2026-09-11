@@ -3,6 +3,7 @@
 [![壁纸数据自动更新](https://github.com/iguanren/Bing-Gallery/actions/workflows/wallpaper.yml/badge.svg)](https://github.com/iguanren/Bing-Gallery/actions/workflows/wallpaper.yml)
 [![归档壁纸](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2Figuanren%2FBing-Gallery%40main%2Fdata.json&query=%24.count&label=%E5%BD%92%E6%A1%A3%E5%A3%81%E7%BA%B8&color=orange&maxAge=3600)](https://iguanren.eu.org/)
 [![演示网站](https://img.shields.io/badge/%E6%BC%94%E7%A4%BA%E7%BD%91%E7%AB%99-iguanren.eu.org-brightgreen)](https://iguanren.eu.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ![今日必应壁纸](https://cn.bing.com/th?id=OHR.FrenchRivieraVillage_ZH-CN2888811422_1920x1080.jpg)
 
@@ -31,15 +32,15 @@ python3 -m http.server 8899          # 本地预览 http://localhost:8899
 
 纯静态站点，无构建：EdgeOne Pages 连接仓库、绑定域名即用。
 
-## 数据与版权
+## 许可与免责
 
-壁纸数据来自 [Bing 官方接口](https://www.bing.com/HPImageArchive.aspx)，图片热链官方 CDN，版权归 **Microsoft / 必应 / 原作者** 所有，仅供个人收藏展示，请勿商用。
+**源码**采用 [MIT 协议](LICENSE) 开源 —— 欢迎学习、修改、部署，商用也没有问题。
+
+**数据与图片另当别论。** 本项目采集的壁纸数据均来自必应（Bing）官方，图片热链官方 CDN，版权归 **Microsoft / 必应 / 原作者** 所有，仅供个人收藏与展示之用。
+
+⚠️ **任何人若将采集到的壁纸数据用于商业场景**（如搭建收费壁纸站、二次分发、嵌入商业产品等），**须自行获得版权方的合法授权，并自行承担由此产生的全部法律责任，与本项目作者无关。**
 
 > 由于维护升级过程中部分数据丢失，最新数据从 2026 年 8 月开始重新抓取并进行归档。
-
-## 开源声明
-
-本项目已开源，**请勿用于任何商业场景**；若产生版权纠纷，请自行负责。
 
 ## 反馈
 

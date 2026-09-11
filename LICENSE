@@ -1,0 +1,44 @@
+MIT License
+
+Copyright (c) 2026 Iguanren (Bing Gallery)
+https://github.com/iguanren/Bing-Gallery
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+ADDITIONAL NOTICE — DATA AND IMAGES (NOT COVERED BY THE MIT LICENSE ABOVE)
+================================================================================
+
+The MIT License above applies to the SOURCE CODE of this project ONLY.
+
+Wallpaper data and images collected, archived, or displayed by this project are
+sourced from Microsoft Bing (https://www.bing.com/HPImageArchive.aspx).
+Copyright of such images and related metadata belongs to Microsoft / Bing and
+their respective original authors.
+
+This project stores NO image files. All images are hotlinked from Bing's
+official CDN. It is intended for personal collection and display purposes only.
+
+Anyone who uses such data or images for COMMERCIAL purposes — including but not
+limited to building a paid wallpaper service, redistributing the images, or
+embedding them in commercial products — MUST obtain proper authorization from
+the copyright holders and bears FULL legal responsibility for their own actions.
+
+The author of this project assumes NO liability whatsoever for any third-party
+use of the data or images collected by or displayed on this project.
