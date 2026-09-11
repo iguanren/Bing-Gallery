@@ -76,16 +76,12 @@
 :root.night .lang-btn { color: #8b949b; }
 :root.night .lang-btn.active { background: rgba(91, 127, 255, 0.85); color: #fff; }
 
-/* —— 内容区块：无卡片，细线分隔 + 留白 —— */
+/* —— 内容区块：无卡片、无分隔线，纯留白区隔 —— */
 .about-section {
-    padding-bottom: 30px;
-    margin-bottom: 30px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    margin-bottom: 34px;
 }
 .about-section:last-of-type {
-    border-bottom: none;
-    padding-bottom: 6px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 .about-section h2 {
     position: relative;
@@ -172,7 +168,6 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 /* —— 夜间模式 —— */
 :root.night .about-head h1 { color: #e8ebee; }
 :root.night .about-head .about-sub { color: #7d868d; }
-:root.night .about-section { border-bottom-color: rgba(255, 255, 255, 0.1); }
 :root.night .about-section h2 { color: #e8ebee; }
 :root.night .about-section p,
 :root.night .about-section li { color: #aeb4bb; }
@@ -180,7 +175,7 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 :root.night .lang-switch { border-color: rgba(91, 127, 255, 0.35); }
 
 @media (max-width: 900px) {
-    .about-section { padding-bottom: 24px; margin-bottom: 24px; }
+    .about-section { margin-bottom: 26px; }
 }
 /* 手机端：标题 / 副标题 / 语言切换全部居中 */
 @media (max-width: 767px) {
@@ -278,11 +273,11 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
         <h2 class="i18n-zh">技术实现与开源</h2>
         <div class="i18n-en">
             <p>A pure static site: vanilla HTML / CSS / JavaScript. No framework, no build step, no database, zero maintenance. Deployed on Tencent EdgeOne Makers.</p>
-            <p>Source code lives on <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">GitHub</a> — feel free to take a look, and a star is always welcome.</p>
+            <p>Source code lives on <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">GitHub</a> — feel free to take a look, and a star is always welcome. Got suggestions? Open a <a href="https://github.com/iguanren/Bing-Gallery/issues" target="_blank" rel="noopener">GitHub Issue</a>, or drop me an email at <a href="mailto:458091312@qq.com">458091312@qq.com</a>.</p>
         </div>
         <div class="i18n-zh">
             <p>本站为纯静态站点：原生 HTML / CSS / JavaScript，无框架、无构建、无数据库、零维护成本，部署于腾讯云 EdgeOne Makers。</p>
-            <p>源码托管在 <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">GitHub</a>，欢迎围观，喜欢的可以给个 Star。</p>
+            <p>源码托管在 <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">GitHub</a>，欢迎围观，喜欢的可以给个 Star。如果你有好的建议，也可以通过 <a href="https://github.com/iguanren/Bing-Gallery/issues" target="_blank" rel="noopener">GitHub Issues</a> 提出，或者给我发邮件 <a href="mailto:458091312@qq.com">458091312@qq.com</a>。</p>
         </div>
     </section>
 
