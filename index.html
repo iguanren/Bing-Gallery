@@ -130,6 +130,9 @@
  *   ⑪ 启动入口
  * ============================================================ */
 
+/* ---------- 页面切换：不恢复旧滚动位置，避免从 About 等页面返回时停在半途 ---------- */
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
 /* ---------- 全局状态 ---------- */
 var todayStr = ""; // 今日日期字符串 YYYYMMDD（来自 data.json）
 var WALLPAPERS = []; // 全部壁纸数据
