@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
-  <title>Bing Gallery - 4K 高清美图壁纸画廊</title>
+  <title>Bing Gallery - 4K HD Wallpaper Gallery</title>
   <meta name="description" content="Bing Gallery 专注收录必应（Bing）官方每日高清美图，4K 超清无水印免费下载，历史壁纸按月归档，一键回看昨日、今日及过往全部必应美图壁纸画廊。">
   <meta name="keywords" content="Bing Gallery,Bing壁纸,Bing美图,必应壁纸,必应美图,必应每日壁纸,每日壁纸,高清壁纸,4K壁纸,4K高清壁纸,高清美图,壁纸画廊,壁纸下载,美图下载,无水印壁纸,壁纸归档,必应官方壁纸">
   <link rel="canonical" href="https://iguanren.eu.org/" />
@@ -34,22 +34,31 @@
   <link rel="shortcut icon" href="/favicon.svg?v=20260903a" />
   <link rel="preconnect" href="https://cn.bing.com" />
   <link rel="dns-prefetch" href="https://cn.bing.com" />
-  <link rel="stylesheet" href="style.css?v=20260911g">
+  <link rel="stylesheet" href="style.css?v=20260911k">
+  <script>
+  /* 尽早应用语言偏好：默认英文，仅当用户选过中文时才切 html[lang]（配合 CSS 的 .i18n-zh/.i18n-en 显隐，零闪烁） */
+  (function () {
+    try {
+      if (localStorage.getItem("iguanren_lang") === "zh") document.documentElement.lang = "zh-CN";
+    } catch (e) {}
+  })();
+  </script>
+  <script src="site.js?v=20260911k"></script>
 </head>
 
 <body>
 
-  <h1 class="sr-only">Bing Gallery - 4K 高清美图壁纸画廊，必应官方每日壁纸免费下载与历史归档</h1>
+  <h1 class="sr-only"><span class="i18n-zh">Bing Gallery - 4K 高清美图壁纸画廊，必应官方每日壁纸免费下载与历史归档</span><span class="i18n-en">Bing Gallery - 4K HD wallpaper gallery, free daily Bing wallpapers with full archive</span></h1>
 
   <!-- 首屏 Hero：纯背景大图 + 图内底部悬浮信息（仅版权描述，沉浸模式无标题无日期） -->
   <div id="main" class="container">
     <div class="photo-bg-info">
       <nav class="pbi-nav">
-        <a href="/" id="pbi-home" class="pbi-nav-link">Home</a>
+        <a href="/" id="pbi-home" class="pbi-nav-link"><span class="i18n-zh">首页</span><span class="i18n-en">Home</span></a>
         <span class="pbi-nav-sep">-</span>
-        <a href="#" id="pbi-archive" class="pbi-nav-link">Archive</a>
+        <a href="#" id="pbi-archive" class="pbi-nav-link"><span class="i18n-zh">归档</span><span class="i18n-en">Archive</span></a>
         <span class="pbi-nav-sep">-</span>
-        <a href="/about.html" class="pbi-nav-link">About</a>
+        <a href="/about.html" class="pbi-nav-link"><span class="i18n-zh">关于</span><span class="i18n-en">About</span></a>
       </nav>
       <div class="pbi-copyright"></div>
     </div>
@@ -59,7 +68,7 @@
   <section id="gallery" class="gallery-section">
     <div class="filter-bar" id="filter-bar">
       <span class="filter-text" id="filter-text"></span>
-      <button type="button" class="filter-home" id="filter-home">回到首页</button>
+      <button type="button" class="filter-home" id="filter-home"><span class="i18n-zh">回到首页</span><span class="i18n-en">Back to home</span></button>
     </div>
     <div id="gallery-grid" class="gallery-grid"></div>
   </section>
@@ -68,30 +77,30 @@
   <div class="archive-mask" id="archive-mask">
     <div class="archive-box">
       <div class="archive-head">
-        <span>Archive</span>
-        <button type="button" class="modal-close" id="archive-close" aria-label="关闭">✕</button>
+        <span><span class="i18n-zh">归档</span><span class="i18n-en">Archive</span></span>
+        <button type="button" class="modal-close" id="archive-close" data-i18n-aria="close" aria-label="关闭">✕</button>
       </div>
       <div class="archive-body" id="archive-months"></div>
     </div>
   </div>
 
   <footer class="site-footer">
-    <p class="footer-copy">&copy; 2019 - <span id="year">2026</span> Bing Gallery <span class="fc-keep">Running For <a id="days" rel="nofollow">0</a> Days</span></p>
+    <p class="footer-copy">&copy; 2019 - <span id="year">2026</span> Bing Gallery <span class="fc-keep" id="uptime"></span></p>
   </footer>
 
   <!-- 卡片流灯箱 -->
   <div class="lightbox" id="lightbox">
     <div class="lightbox-stage">
       <div class="lightbox-toolbar">
-        <button id="lb-download" type="button">下载原图</button>
-        <button id="lb-close" type="button" aria-label="关闭">✕</button>
+        <button id="lb-download" type="button" data-i18n="download">下载原图</button>
+        <button id="lb-close" type="button" data-i18n-aria="close" aria-label="关闭">✕</button>
       </div>
       <div class="lightbox-img-wrap" id="lb-img-wrap">
         <div class="lightbox-loading" id="lb-loading">
           <div class="wp-spin"></div>
-          <p>正在加载 4K 原图...</p>
+          <p><span class="i18n-zh">正在加载 4K 原图...</span><span class="i18n-en">Loading 4K original...</span></p>
         </div>
-        <img id="lb-img" alt="必应壁纸" />
+        <img id="lb-img" alt="Bing wallpaper" data-i18n-alt="fallbackTitle" />
       </div>
       <div class="lightbox-info">
         <p class="lb-line"><span id="lb-date"></span><span class="lb-sep">·</span><span id="lb-title"></span></p>
@@ -100,13 +109,16 @@
     </div>
   </div>
 
-  <!-- 悬浮按钮：夜间模式 / 回到顶部 -->
+  <!-- 悬浮按钮：语言切换 / 夜间模式 / 回到顶部 -->
   <div class="float-actions" id="float-actions">
-    <button id="night-toggle" type="button" class="float-btn" aria-label="夜间模式" title="夜间模式">
+    <button id="lang-toggle" type="button" class="float-btn lang-toggle" aria-label="语言" title="语言">
+      <span class="lang-alt-zh">中</span><span class="lang-alt-en">EN</span>
+    </button>
+    <button id="night-toggle" type="button" class="float-btn" data-i18n-aria="nightMode" data-i18n-title="nightMode" aria-label="夜间模式" title="夜间模式">
       <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
     </button>
-    <button id="back-top" type="button" class="float-btn back-top" aria-label="回到顶部" title="回到顶部">
+    <button id="back-top" type="button" class="float-btn back-top" data-i18n-aria="backTop" data-i18n-title="backTop" aria-label="回到顶部" title="回到顶部">
       <svg class="progress-ring" width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
         <circle class="ring-bg" cx="23" cy="23" r="21.5"></circle>
         <circle class="ring-fg" cx="23" cy="23" r="21.5"></circle>
@@ -127,9 +139,10 @@
  *   ⑥ 历史壁纸归档
  *   ⑦ 灯箱预览（含左右切换 / 键盘操作）
  *   ⑧ 图片下载（iOS 走系统分享，其余走 a[download]）
- *   ⑨ 今日 / 昨日壁纸弹窗
- *   ⑩ 全局事件绑定
+ *   ⑨ 全局事件绑定
+ *   ⑩ 语言切换（中 / EN）
  *   ⑪ 启动入口
+ *   ⑫ 底部信息
  * ============================================================ */
 
 /* ---------- 页面切换：不恢复旧滚动位置，避免从 About 等页面返回时停在半途 ---------- */
@@ -139,6 +152,50 @@ if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 var todayStr = ""; // 今日日期字符串 YYYYMMDD（来自 data.json）
 var WALLPAPERS = []; // 全部壁纸数据
 var WP_CACHE_KEY = "bing_wp_cache_v2"; // 本地缓存键名（v2：region 字段结构升级，强制老访客拉新数据）
+
+/* ---------- 站点双语（中 / EN） ---------- */
+/* 说明：语言偏好读写、html[lang] 切换、悬浮按钮绑定均由公共脚本 site.js 负责，
+   本页只保留"按当前语言渲染文案"的逻辑（见 ⑩ applyLang）。 */
+var LANG = "en"; // 当前语言，默认英文
+
+/* 界面文案词典：静态部分走 HTML 双份 + CSS 显隐，这里放 JS 动态渲染的文案 */
+var I18N = {
+  zh: {
+    pageTitle: "Bing Gallery - 4K 高清美图壁纸画廊",
+    download: "下载原图",
+    downloading: "下载中…",
+    loading: "正在加载...",
+    loadFail: "图片加载失败，请检查网络后重试",
+    loadingData: "壁纸数据加载中，请稍候刷新...",
+    noArchive: "暂无归档数据",
+    fallbackTitle: "必应美图",
+    close: "关闭",
+    nightMode: "夜间模式",
+    backTop: "回到顶部",
+    filterSuffix: function (n) { return "壁纸归档 · 共 " + n + " 张"; }
+  },
+  en: {
+    pageTitle: "Bing Gallery - 4K HD Wallpaper Gallery",
+    download: "Download",
+    downloading: "Downloading…",
+    loading: "Loading...",
+    loadFail: "Image failed to load. Please check your network.",
+    loadingData: "Loading wallpapers, please refresh...",
+    noArchive: "No archive data",
+    fallbackTitle: "Bing wallpaper",
+    close: "Close",
+    nightMode: "Night mode",
+    backTop: "Back to top",
+    filterSuffix: function (n) { return " wallpaper archive · " + n + " images"; }
+  }
+};
+
+/* 英文市场：英文模式下按图片指纹取这些市场的标题/版权 */
+var EN_REGIONS = { US: 1, GB: 1, AU: 1, IN: 1, CA: 1, NZ: 1, SG: 1 };
+var FP_EN = {}; // 图片指纹 → 英文市场条目（数据加载后构建）
+var MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+function t(key) { return I18N[LANG][key]; }
 
 /* 展示层未来日期过滤：必应部分市场会提前一天放出"明日图"（enddate 超前），
  * 数据照存不丢，但展示一律只显示 ≤ 今日，避免卡片流/首屏出现未来日期 */
@@ -161,60 +218,65 @@ function escapeHtml(s) {
     .replace(/'/g, "&#39;");
 }
 
-/* ============================================================
- * ① 回到顶部 + 滚动进度环
- * ============================================================ */
-var floatActions = document.getElementById("float-actions");
-var backTop = document.getElementById("back-top");
-var ringFg = backTop.querySelector(".ring-fg");
-var RING_R = ringFg.r.baseVal.value; // 进度环半径
-var RING_C = 2 * Math.PI * RING_R; // 进度环周长
+/* ---------- 双语工具 ---------- */
 
-ringFg.style.strokeDasharray = RING_C;
-ringFg.style.strokeDashoffset = RING_C;
-
-/* 滚动时：更新进度环，滚动超过阈值后显示悬浮按钮 */
-function updateScrollUI() {
-  var st = window.scrollY || document.documentElement.scrollTop || 0;
-  var max = document.documentElement.scrollHeight - window.innerHeight;
-  var p = max > 0 ? Math.min(st / max, 1) : 0;
-  ringFg.style.strokeDashoffset = RING_C * (1 - p);
-  if (st > 20) floatActions.classList.add("show");
-  else floatActions.classList.remove("show");
+/* 图片指纹（urlbase 里的 OHR 名）— 与展示去重同一套识别方式 */
+function fpOf(item) {
+  var m = /id=(OHR\.[^_]+)/.exec((item && item.urlbase) || "");
+  return m ? m[1] : null;
 }
 
-window.addEventListener("scroll", updateScrollUI, { passive: true });
-window.addEventListener("resize", updateScrollUI);
-backTop.addEventListener("click", function () {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-
-/* ============================================================
- * ② 夜间模式
- * ============================================================ */
-var nightBtn = document.getElementById("night-toggle");
-var iconMoon = nightBtn.querySelector(".icon-moon");
-var iconSun = nightBtn.querySelector(".icon-sun");
-var NIGHT_KEY = "iguanren_night"; // localStorage 键名
-
-/* 应用夜间模式：切 class、换图标、存偏好 */
-function applyNight(night) {
-  document.documentElement.classList.toggle("night", night);
-  iconMoon.style.display = night ? "none" : "";
-  iconSun.style.display = night ? "" : "none";
-  try {
-    localStorage.setItem(NIGHT_KEY, night ? "1" : "0");
-  } catch (e) {}
+/* 构建「指纹 → 英文市场条目」映射，供英文模式取英文标题 / 版权描述 */
+function buildFpMap() {
+  FP_EN = {};
+  for (var i = 0; i < WALLPAPERS.length; i++) {
+    var it = WALLPAPERS[i];
+    var fp = fpOf(it);
+    if (fp && EN_REGIONS[it.region] && !FP_EN[fp]) FP_EN[fp] = it;
+  }
 }
 
-nightBtn.addEventListener("click", function () {
-  applyNight(!document.documentElement.classList.contains("night"));
-});
+/* 同一张图的英文市场条目（没有则 null） */
+function enVariant(item) {
+  var fp = fpOf(item);
+  return fp && FP_EN[fp] && FP_EN[fp] !== item ? FP_EN[fp] : null;
+}
 
-/* 进入页面时恢复上次的夜间模式偏好 */
-try {
-  if (localStorage.getItem(NIGHT_KEY) === "1") applyNight(true);
-} catch (e) {}
+/* 标题：英文模式优先取同图英文市场标题，缺省回退原文；"Info" 占位则用通用文案 */
+function dispTitle(item) {
+  if (!item) return t("fallbackTitle");
+  var title = item.title;
+  if (LANG === "en") {
+    var en = enVariant(item);
+    if (en && en.title) title = en.title;
+  }
+  return title && title !== "Info" ? title : t("fallbackTitle");
+}
+
+/* 版权描述：英文模式优先取同图英文市场描述 */
+function dispCopyright(item) {
+  if (!item) return "";
+  if (LANG === "en") {
+    var en = enVariant(item);
+    if (en && en.copyright) return en.copyright;
+  }
+  return item.copyright || "";
+}
+
+/* 日期本地化："2026-09-11" → 中文「2026年9月11日」 / 英文「Sep 11, 2026」 */
+function fmtDate(dateLabel) {
+  if (!dateLabel) return "";
+  var p = String(dateLabel).split("-");
+  if (p.length !== 3) return dateLabel;
+  var y = p[0], mo = parseInt(p[1], 10), d = parseInt(p[2], 10);
+  if (LANG === "zh") return y + "年" + mo + "月" + d + "日";
+  return MONTHS_EN[mo - 1] + " " + d + ", " + y;
+}
+
+/* ============================================================
+ * 回到顶部 / 夜间模式：已抽到公共脚本 site.js（与 About 页共用一份），
+ * 初始化见本文件末尾的 BGSite.init()
+ * ============================================================ */
 
 /* ============================================================
  * ③ 壁纸数据加载（含 localStorage 本地缓存）
@@ -286,11 +348,12 @@ function applyBg(item) {
     : item.full);
   var main = document.getElementById("main");
   if (main) main.style.background = "url(" + url + ") center/cover no-repeat";
-  /* 沉浸模式：首屏只留版权描述 */
+  /* 沉浸模式：首屏只留版权描述（随语言切换：英文模式取同图英文市场描述） */
   var pc = document.querySelector(".pbi-copyright");
   if (pc) {
-    if (item.copyright) pc.textContent = item.copyright;
-    pc.style.display = item.copyright ? "" : "none";
+    var copy = dispCopyright(item);
+    if (copy) pc.textContent = copy;
+    pc.style.display = copy ? "" : "none";
   }
 }
 
@@ -306,11 +369,6 @@ function thumbFor(item) {
   if (w < 480) return item.thumb + "&w=240&h=135&rs=1&c=4";
   if (w < 768) return item.thumb + "&w=320&h=180&rs=1&c=4";
   return item.thumb;
-}
-
-/* 标题兜底：部分海外市场 title 为 "Info" 占位，显示通用文案 */
-function dispTitle(item) {
-  return item.title && item.title !== "Info" ? item.title : "必应美图";
 }
 
 /* 展示过滤：剔除失效图(dead) → 按图片基础名全局去重（跨天/跨市场同图只显示一次；
@@ -336,7 +394,7 @@ function renderGallery(list) {
   var items = displayFilter(list || WALLPAPERS);
   if (!list && items.length > SHOW_RECENT) items = items.slice(0, SHOW_RECENT);
   if (!items.length) {
-    grid.innerHTML = '<p class="gallery-empty">壁纸数据加载中，请稍候刷新...</p>';
+    grid.innerHTML = '<p class="gallery-empty">' + t("loadingData") + "</p>";
     return;
   }
   grid.innerHTML = items
@@ -354,7 +412,7 @@ function renderGallery(list) {
         '" loading="lazy" decoding="async" referrerpolicy="no-referrer" />' +
         '<div class="wp-card-meta">' +
         '<span class="wp-card-date">' +
-        item.dateLabel +
+        fmtDate(item.dateLabel) +
         "</span>" +
         (item.region ? '<span class="wp-card-region">' + item.region + "</span>" : "") +
         '<span class="wp-card-title">' +
@@ -428,9 +486,11 @@ function getMonths() {
   return Object.keys(seen).sort().reverse();
 }
 
-/* YYYYMM → "YY 年 M 月"（去掉前导 0） */
+/* 月份本地化："202509" → 中文「25 年 9 月」 / 英文「Sep 2025」 */
 function fmtMonth(ym) {
-  return ym.slice(2, 4) + " 年 " + parseInt(ym.slice(4), 10) + " 月";
+  var y = ym.slice(0, 4), mo = parseInt(ym.slice(4), 10);
+  if (LANG === "zh") return ym.slice(2, 4) + " 年 " + mo + " 月";
+  return MONTHS_EN[mo - 1] + " " + y;
 }
 
 /* 按月份筛选并重渲染卡片流 */
@@ -460,7 +520,7 @@ function updateFilterBar() {
         return it.date.slice(0, 6) === currentFilter;
       })
     );
-    text.textContent = fmtMonth(currentFilter) + "壁纸归档 · 共 " + list.length + " 张";
+    text.textContent = fmtMonth(currentFilter) + t("filterSuffix")(list.length);
     bar.classList.add("show");
   } else {
     bar.classList.remove("show");
@@ -477,7 +537,7 @@ function openArchive() {
           return '<button type="button" class="archive-month" data-ym="' + escapeHtml(m) + '">' + fmtMonth(m) + "</button>";
         })
         .join("")
-    : '<p class="archive-empty">暂无归档数据</p>';
+    : '<p class="archive-empty">' + t("noArchive") + "</p>";
   box.querySelectorAll(".archive-month").forEach(function (btn) {
     btn.addEventListener("click", function () {
       setMonthFilter(btn.dataset.ym);
@@ -532,7 +592,7 @@ function renderLightbox() {
   var item = currentList[lbIndex];
   lbImg.style.opacity = "0";
   lbLoading.style.display = "flex";
-  lbLoading.innerHTML = '<div class="wp-spin"></div><p>正在加载...</p>';
+  lbLoading.innerHTML = '<div class="wp-spin"></div><p>' + t("loading") + "</p>";
   lbImg.onload = function () {
     lbImg.style.opacity = "1";
     lbLoading.style.display = "none";
@@ -549,14 +609,14 @@ function renderLightbox() {
       lbImg.src = item.full;
       return;
     }
-    lbLoading.innerHTML = "<p>图片加载失败，请检查网络后重试</p>";
+    lbLoading.innerHTML = "<p>" + t("loadFail") + "</p>";
   };
   lbImg.src = midFor(item);
   lbImg.alt = dispTitle(item);
   currentLbItem = item;
-  document.getElementById("lb-date").textContent = item.dateLabel;
+  document.getElementById("lb-date").textContent = fmtDate(item.dateLabel);
   document.getElementById("lb-title").textContent = dispTitle(item);
-  document.getElementById("lb-copyright").textContent = item.copyright || "";
+  document.getElementById("lb-copyright").textContent = dispCopyright(item);
 }
 
 /* 关闭灯箱 */
@@ -603,17 +663,16 @@ function downloadImage(url, name) {
   if (dlBusy || !url) return;
   dlBusy = true;
   var btn = dlBtnEl;
-  var oldText = btn ? btn.textContent : "";
   if (btn) {
     btn.disabled = true;
-    btn.textContent = "下载中…";
+    btn.textContent = t("downloading");
   }
 
-  /* 收尾：恢复按钮状态 */
+  /* 收尾：恢复按钮状态（按当前语言恢复，切换语言后也不会文案错乱） */
   function done() {
     if (btn) {
       btn.disabled = false;
-      btn.textContent = oldText;
+      btn.textContent = t("download");
     }
     dlBusy = false;
   }
@@ -702,24 +761,59 @@ document.addEventListener("keydown", function (e) {
 });
 
 /* ============================================================
- * ⑩ 启动入口
+ * ⑩ 语言文案渲染（语言状态由公共脚本 site.js 统一管理）
+ * ============================================================ */
+/* 按当前语言刷新本页文案与动态内容，由 BGSite.init({ onLang }) 回调触发 */
+function applyLang(lang) {
+  LANG = lang === "en" ? "en" : "zh";
+
+  /* JS 动态文案：data-i18n 文本 / data-i18n-aria 无障碍标签 / data-i18n-title 悬停提示 / data-i18n-alt 替代文本 */
+  document.querySelectorAll("[data-i18n]").forEach(function (el) {
+    var v = I18N[LANG][el.dataset.i18n];
+    if (v) el.textContent = v;
+  });
+  document.querySelectorAll("[data-i18n-aria]").forEach(function (el) {
+    var v = I18N[LANG][el.dataset.i18nAria];
+    if (v) el.setAttribute("aria-label", v);
+  });
+  document.querySelectorAll("[data-i18n-title]").forEach(function (el) {
+    var v = I18N[LANG][el.dataset.i18nTitle];
+    if (v) el.title = v;
+  });
+  document.querySelectorAll("[data-i18n-alt]").forEach(function (el) {
+    var v = I18N[LANG][el.dataset.i18nAlt];
+    if (v) el.alt = v;
+  });
+
+  /* 浏览器标签标题 */
+  document.title = I18N[LANG].pageTitle;
+
+  /* 受语言影响的动态内容重渲染（数据尚未加载时跳过，等 loadData 回来自然按当前语言渲染） */
+  if (WALLPAPERS.length) {
+    buildFpMap();
+    applyBg(pickHero());
+    renderGallery();
+    updateFilterBar();
+    if (archiveMask.classList.contains("show")) openArchive();
+    if (lbModal.classList.contains("show")) renderLightbox();
+  }
+}
+
+/* 悬浮按钮（语言切换 / 夜间模式 / 回到顶部）+ 运行天数 + 语言偏好：由公共脚本 site.js 统一初始化 */
+BGSite.init({ onLang: applyLang });
+
+/* ============================================================
+ * ⑪ 启动入口
  * ============================================================ */
 loadData().then(function (d) {
   d = d || {};
   todayStr = d.today || "";
+  buildFpMap(); // 构建「指纹 → 英文条目」映射，供英文模式取英文标题 / 版权
   if (d.items && d.items.length) applyBg(pickHero());
   renderGallery();
 });
 
-/* ⑪ 底部信息：运行天数（北京时间自 2019-06-16 起算）+ 版权年份动态取当前年 */
-(function () {
-  var s1 = new Date("2019-06-16T00:00:00+08:00");
-  var days = Math.floor((Date.now() - s1.getTime()) / 86400000);
-  var el = document.getElementById("days");
-  if (el) el.textContent = days;
-  var y = document.getElementById("year");
-  if (y) y.textContent = new Date().getFullYear();
-})();
+/* ⑫ 底部信息（运行天数 / 版权年份）已由公共脚本 site.js 渲染 */
 </script>
 </body>
 </html>

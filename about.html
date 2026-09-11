@@ -22,7 +22,16 @@
 <link rel="shortcut icon" href="/favicon.svg?v=20260903a" />
 <link rel="preconnect" href="https://cn.bing.com" />
 <link rel="dns-prefetch" href="https://cn.bing.com" />
-<link rel="stylesheet" href="style.css?v=20260911g">
+<link rel="stylesheet" href="style.css?v=20260911k">
+<script>
+/* 尽早应用语言偏好：默认英文，仅当用户选过中文时才切 html[lang]（配合 CSS 的 .i18n-zh/.i18n-en 显隐，零闪烁） */
+(function () {
+  try {
+    if (localStorage.getItem("iguanren_lang") === "zh") document.documentElement.lang = "zh-CN";
+  } catch (e) {}
+})();
+</script>
+<script src="site.js?v=20260911k"></script>
 <style>
 /* ============ About 页专属样式（复用主站 style.css 的基础配色与夜间模式） ============ */
 /* 全宽白色内容带：与主页卡片流区（.gallery-section）同款，
@@ -65,40 +74,7 @@
     letter-spacing: 0.3px;
 }
 
-/* —— 语言切换器（胶囊按钮组） —— */
-.lang-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    flex-wrap: wrap;
-}
-.lang-switch {
-    display: inline-flex;
-    align-items: stretch;   /* 按钮撑满容器高度，选中背景上下不留白 */
-    border: 1px solid rgba(91, 127, 255, 0.3);
-    border-radius: 999px;
-    overflow: hidden;
-    flex-shrink: 0;
-}
-.lang-btn {
-    border: none;
-    background: none;
-    color: #7a848b;
-    font-size: 13px;
-    font-family: inherit;
-    line-height: 1.5;       /* 固定行高：中英文字体度量不同，不设会导致两个按钮高度不一 */
-    padding: 6px 14px;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
-}
-.lang-btn:hover { color: #5b7fff; }
-.lang-btn.active {
-    background: rgba(91, 127, 255, 0.9);
-    color: #fff;
-}
-:root.night .lang-btn { color: #8b949b; }
-:root.night .lang-btn.active { background: rgba(91, 127, 255, 0.85); color: #fff; }
+/* —— 语言切换已统一到右下角悬浮按钮（与主站一致），此处不再需要胶囊样式 —— */
 
 /* —— 今日壁纸展示：宽度与正文对齐，图上叠图标 + 版权描述 —— */
 .about-hero {
@@ -244,19 +220,13 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 :root.night .about-section p,
 :root.night .about-section li { color: #aeb4bb; }
 :root.night .about-section li strong { color: #d5dade; }
-:root.night .lang-switch { border-color: rgba(91, 127, 255, 0.35); }
 
 @media (max-width: 900px) {
     .about-section { margin-bottom: 26px; }
 }
-/* 手机端：标题 / 副标题 / 语言切换全部居中 */
+/* 手机端：标题与副标题居中 */
 @media (max-width: 767px) {
     .about-head { text-align: center; }
-    .lang-row {
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-    }
 }
 @media (max-width: 480px) {
     .about-wrap { padding: 30px 14px 20px; }
@@ -273,18 +243,12 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 <div class="about-wrap">
     <header class="about-head">
         <h1>About Bing Gallery</h1>
-        <div class="lang-row">
-            <p class="about-sub" data-en="A simple 4K HD wallpaper gallery" data-zh="简简单单的 4K 高清美图壁纸画廊">A simple 4K HD wallpaper gallery</p>
-            <div class="lang-switch" role="group" aria-label="Language">
-                <button type="button" class="lang-btn active" data-lang="en">English</button>
-                <button type="button" class="lang-btn" data-lang="zh">中文简体</button>
-            </div>
-        </div>
+        <p class="about-sub" data-en="A simple 4K HD wallpaper gallery" data-zh="简简单单的 4K 高清美图壁纸画廊">A simple 4K HD wallpaper gallery</p>
     </header>
 
     <!-- 今日壁纸展示：宽度与正文一致，图上叠图标+版权描述（不显示日期与标题） -->
     <figure class="about-hero" id="about-hero">
-        <img id="about-hero-img" alt="今日必应壁纸" decoding="async" />
+        <img id="about-hero-img" alt="Today's Bing wallpaper" decoding="async" />
         <figcaption class="about-hero-cap">
             <span id="about-hero-caption"></span>
         </figcaption>
@@ -358,8 +322,11 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 </div>
 </main>
 
-<!-- 悬浮按钮：夜间模式 / 回到顶部 -->
+<!-- 悬浮按钮：语言切换 / 夜间模式 / 回到顶部 -->
 <div class="float-actions" id="float-actions">
+    <button id="lang-toggle" type="button" class="float-btn lang-toggle" aria-label="语言" title="语言">
+      <span class="lang-alt-zh">中</span><span class="lang-alt-en">EN</span>
+    </button>
     <button id="night-toggle" type="button" class="float-btn" aria-label="夜间模式" title="夜间模式">
         <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -374,91 +341,28 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 </div>
 
 <footer class="site-footer">
-    <p class="footer-copy">&copy; 2019 - <span id="year">2026</span> Bing Gallery <span class="fc-keep">Running For <a id="days" rel="nofollow">0</a> Days</span></p>
+    <p class="footer-copy">&copy; 2019 - <span id="year">2026</span> Bing Gallery <span class="fc-keep" id="uptime"></span></p>
 </footer>
 
 <script>
 /* 页面加载不恢复旧滚动位置，避免切换后停在中途 */
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
-/* —— 悬浮按钮：夜间模式 + 回到顶部（与主站同款逻辑） —— */
-var floatActions = document.getElementById("float-actions");
-var backTop = document.getElementById("back-top");
-var ringFg = backTop.querySelector(".ring-fg");
-var RING_R = ringFg.r.baseVal.value;
-var RING_C = 2 * Math.PI * RING_R;
-ringFg.style.strokeDasharray = RING_C;
-ringFg.style.strokeDashoffset = RING_C;
+/* —— 悬浮按钮（语言切换 / 夜间模式 / 回到顶部）+ 运行天数 + 语言偏好：由公共脚本 site.js 统一初始化 —— */
 
-function updateScrollUI() {
-  var st = window.scrollY || document.documentElement.scrollTop || 0;
-  var max = document.documentElement.scrollHeight - window.innerHeight;
-  var p = max > 0 ? Math.min(st / max, 1) : 0;
-  ringFg.style.strokeDashoffset = RING_C * (1 - p);
-  if (st > 20) floatActions.classList.add("show");
-  else floatActions.classList.remove("show");
-}
-window.addEventListener("scroll", updateScrollUI, { passive: true });
-window.addEventListener("resize", updateScrollUI);
-backTop.addEventListener("click", function () {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-});
-updateScrollUI();
-
-/* —— 夜间模式：与主站共用偏好 —— */
-var nightBtn = document.getElementById("night-toggle");
-var iconMoon = nightBtn.querySelector(".icon-moon");
-var iconSun = nightBtn.querySelector(".icon-sun");
-var NIGHT_KEY = "iguanren_night";
-
-function applyNight(night) {
-  document.documentElement.classList.toggle("night", night);
-  iconMoon.style.display = night ? "none" : "";
-  iconSun.style.display = night ? "" : "none";
-  try { localStorage.setItem(NIGHT_KEY, night ? "1" : "0"); } catch (e) {}
-}
-
-nightBtn.addEventListener("click", function () {
-  applyNight(!document.documentElement.classList.contains("night"));
-});
-
-try {
-  if (localStorage.getItem(NIGHT_KEY) === "1") applyNight(true);
-} catch (e) {}
-
-/* —— 语言切换：默认英文，切换零刷新（只切 html[lang]，CSS 控制显隐） —— */
-var LANG_KEY = "iguanren_lang";
+/* 语言文案渲染：整块 .i18n-zh / .i18n-en 由 CSS 显隐驱动，这里只处理 data-en / data-zh 文本节点 */
+var LANG = "en"; /* 当前语言，默认英文 */
 
 function applyLang(lang) {
-  document.documentElement.lang = (lang === "zh") ? "zh-CN" : "en";
+  LANG = (lang === "en") ? "en" : "zh";
+  /* 双语文本节点（data-en / data-zh）：直接替换文本，切换零刷新 */
   document.querySelectorAll("[data-en][data-zh]").forEach(function (el) {
-    el.textContent = el.dataset[lang === "zh" ? "zh" : "en"];
-  });
-  document.querySelectorAll(".lang-btn").forEach(function (b) {
-    b.classList.toggle("active", b.dataset.lang === lang);
+    el.textContent = el.dataset[LANG];
   });
   /* 浏览器标签标题固定为 About Bing Gallery，不随语言变化 */
 }
 
-var savedLang = localStorage.getItem(LANG_KEY);
-if (savedLang !== "zh" && savedLang !== "en") savedLang = "en";   /* 默认英文 */
-applyLang(savedLang);
-
-document.querySelectorAll(".lang-btn").forEach(function (btn) {
-  btn.addEventListener("click", function () {
-    var lang = btn.dataset.lang;
-    localStorage.setItem(LANG_KEY, lang);
-    applyLang(lang);
-  });
-});
-
-/* —— 底部：运行天数（与主站同一算法，2019-06-16 起算）+ 版权年份 —— */
-var s1 = new Date("2019-06-16T00:00:00+08:00");
-var days = Math.floor((Date.now() - s1.getTime()) / 86400000);
-var dEl = document.getElementById("days");
-if (dEl) dEl.textContent = days;
-var y = document.getElementById("year");
-if (y) y.textContent = new Date().getFullYear();
+BGSite.init({ onLang: applyLang });
 
 /* —— 今日壁纸展示：取 data.json 最新一条（≤ 今日），只叠版权描述 —— */
 (function () {

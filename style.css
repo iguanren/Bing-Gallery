@@ -659,6 +659,21 @@ footer p {
 }
 
 /* ============================================================
+   站点双语（中 / EN）
+   静态文案双份 + 按 html[lang] 显隐，切换零闪烁；
+   语言偏好存 localStorage:iguanren_lang，与 About 页互通
+   ============================================================ */
+html[lang^="zh"] .i18n-en { display: none !important; }
+html:not([lang^="zh"]) .i18n-zh { display: none !important; }
+
+/* 语言切换按钮：图标显示"点击后将切换到的语言"（英文态显示「中」，中文态显示「EN」） */
+.lang-toggle { font-weight: 600; line-height: 1; }
+.lang-toggle .lang-alt-zh { display: inline; font-size: 16px; }
+.lang-toggle .lang-alt-en { display: none; font-size: 13.5px; letter-spacing: 0.03em; }
+html[lang^="zh"] .lang-toggle .lang-alt-zh { display: none; }
+html[lang^="zh"] .lang-toggle .lang-alt-en { display: inline; }
+
+/* ============================================================
    尊重系统"减弱动态效果"设置：动画/过渡几乎立即完成
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
