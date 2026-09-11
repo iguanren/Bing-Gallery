@@ -20,9 +20,19 @@
 <meta name="twitter:image" content="https://cn.bing.com/th?id=OHR.FrenchRivieraVillage_ZH-CN2888811422_UHD.jpg" />
 <meta name="robots" content="index, follow" />
 <link rel="shortcut icon" href="/favicon.svg?v=20260903a" />
+<link rel="preconnect" href="https://cn.bing.com" />
+<link rel="dns-prefetch" href="https://cn.bing.com" />
 <link rel="stylesheet" href="style.css?v=20260911g">
 <style>
 /* ============ About 页专属样式（复用主站 style.css 的基础配色与夜间模式） ============ */
+/* 全宽白色内容带：与主页卡片流区（.gallery-section）同款，
+   让 footer 落在灰色 body 底上，形成「白色内容 + 灰色页脚」的层次区分 */
+.about-band {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
 .about-wrap {
     max-width: 960px;
     margin: 0 auto;
@@ -65,7 +75,7 @@
 }
 .lang-switch {
     display: inline-flex;
-    align-items: center;
+    align-items: stretch;   /* 按钮撑满容器高度，选中背景上下不留白 */
     border: 1px solid rgba(91, 127, 255, 0.3);
     border-radius: 999px;
     overflow: hidden;
@@ -77,6 +87,7 @@
     color: #7a848b;
     font-size: 13px;
     font-family: inherit;
+    line-height: 1.5;       /* 固定行高：中英文字体度量不同，不设会导致两个按钮高度不一 */
     padding: 6px 14px;
     cursor: pointer;
     transition: background 0.2s ease, color 0.2s ease;
@@ -103,7 +114,10 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;   /* 加载完成淡入，不突兀弹出 */
 }
+.about-hero img.is-loaded { opacity: 1; }
 .about-hero-cap {
     position: absolute;
     left: 0;
@@ -113,18 +127,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
     color: #fff;
     font-size: 12.5px;
     text-align: center;
     pointer-events: none;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-.about-hero-cap svg {
-    width: 14px;
-    height: 14px;
-    flex: none;
-    opacity: 0.9;
 }
 
 /* —— 内容区块：无卡片、无分隔线，纯留白区隔 —— */
@@ -160,6 +167,10 @@
     line-height: 1.8;
     color: #6c767d;
     margin: 0 0 10px;
+}
+/* 正文首行缩进两字符（中文排版习惯）；提示行独立成行，不缩进 */
+.about-section p:not(.about-note) {
+    text-indent: 2em;
 }
 .about-section p:last-child { margin-bottom: 0; }
 /* 提示行：三角形警示图标 + 小字 */
@@ -223,6 +234,10 @@ html[lang^="zh"] .i18n-en { display: none !important; }
 html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 
 /* —— 夜间模式 —— */
+:root.night .about-band {
+    background: rgba(20, 20, 26, 0.88);
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
 :root.night .about-head h1 { color: #e8ebee; }
 :root.night .about-head .about-sub { color: #7d868d; }
 :root.night .about-section h2 { color: #e8ebee; }
@@ -254,7 +269,8 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 </head>
 <body>
 
-<main class="about-wrap">
+<main class="about-band">
+<div class="about-wrap">
     <header class="about-head">
         <h1>About Bing Gallery</h1>
         <div class="lang-row">
@@ -268,9 +284,8 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 
     <!-- 今日壁纸展示：宽度与正文一致，图上叠图标+版权描述（不显示日期与标题） -->
     <figure class="about-hero" id="about-hero">
-        <img id="about-hero-img" src="" alt="今日必应壁纸" />
+        <img id="about-hero-img" alt="今日必应壁纸" decoding="async" />
         <figcaption class="about-hero-cap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
             <span id="about-hero-caption"></span>
         </figcaption>
     </figure>
@@ -340,6 +355,7 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
     <div class="about-foot">
         <a class="about-back" href="/" data-en="← Back to Home" data-zh="← 返回首页">← Back to Home</a>
     </div>
+</div>
 </main>
 
 <!-- 悬浮按钮：夜间模式 / 回到顶部 -->
@@ -471,6 +487,7 @@ if (y) y.textContent = new Date().getFullYear();
         ? "https://cn.bing.com" + item.urlbase + "_1920x1080.jpg"
         : item.full);
       if (!url) throw new Error("no url");
+      img.addEventListener("load", function () { img.classList.add("is-loaded"); });
       img.addEventListener("error", function () { hero.style.display = "none"; });
       img.src = url;
       if (cap) cap.textContent = item.copyright || "";
