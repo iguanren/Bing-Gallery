@@ -98,6 +98,7 @@ html {
 .pbi-nav-link {
     color: inherit;
     text-decoration: none;
+    font-weight: 600;
     opacity: 0.85;
     pointer-events: auto;   /* 父层 .photo-bg-info 是 none，链接需单独放开 */
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -268,17 +269,17 @@ footer p {
 }
 :root.night .filter-home { background: rgba(91, 127, 255, 0.22); color: #8aa8ff; }
 
-/* 归档弹窗（历史壁纸 → 月份选择） */
+/* 归档弹窗（历史壁纸 → 月份选择）：半透明毛玻璃 */
 .archive-mask {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.45);
     z-index: 9998;
     display: none;
     align-items: center;
     justify-content: center;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 .archive-mask.show { display: flex; }
 .archive-mask.show .archive-box {
@@ -293,14 +294,20 @@ footer p {
 .archive-box {
     width: min(92vw, 560px);
     max-height: 80vh;
-    background: #fff;
+    background: rgba(255, 255, 255, 0.68);
+    backdrop-filter: blur(24px) saturate(1.8);
+    -webkit-backdrop-filter: blur(24px) saturate(1.8);
+    border: 1px solid rgba(255, 255, 255, 0.55);
     border-radius: 16px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
 }
-:root.night .archive-box { background: #232329; }
+:root.night .archive-box {
+    background: rgba(30, 30, 36, 0.72);
+    border-color: rgba(255, 255, 255, 0.12);
+}
 
 .archive-head {
     display: flex;
