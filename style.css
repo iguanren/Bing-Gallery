@@ -86,16 +86,19 @@ html {
     line-height: 1.4;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
 }
-/* 首屏导航行：Home - Archive - About（字号对齐卡片标题 14px / 手机 13px） */
+/* 首屏导航行：Home - Archive - About（字号对齐卡片标题 15px / 手机 14px）
+   链接带 padding 撑大点击热区，手机上更好点 */
 .pbi-nav {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    margin-bottom: 2px;
+    gap: 0;
+    font-size: 15px;
+    margin-bottom: 0;
 }
 .pbi-nav-link {
+    display: inline-block;
+    padding: 9px 13px;
     color: inherit;
     text-decoration: none;
     font-weight: 600;
@@ -647,7 +650,8 @@ footer p {
     .wp-card-title { font-size: 13px; }
     .photo-bg-info { padding: 20px 12px 10px; }
     .pbi-copyright { font-size: 11px; margin-top: 3px; }
-    .pbi-nav { font-size: 13px; }
+    .pbi-nav { font-size: 14px; }
+    .pbi-nav-link { padding: 11px 12px; }
     .lightbox-toolbar { top: 12px; right: 12px; gap: 8px; }
     .lightbox-toolbar a { padding: 6px 14px; font-size: 12px; }
     .lightbox-toolbar button { font-size: 14px; padding: 6px 12px; }
