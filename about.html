@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Bing Gallery</title>
+<meta name="description" content="About Bing Gallery — a personal gallery of Bing's daily wallpapers. Daily auto-collected, 4K watermark-free downloads, full monthly archive. Data source and copyright info.">
+<link rel="canonical" href="https://iguanren.eu.org/about.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Bing Gallery" />
+<meta property="og:title" content="About Bing Gallery" />
+<meta property="og:description" content="A personal gallery of Bing's daily wallpapers — how the site started, what's on it, and the data behind it." />
+<meta property="og:url" content="https://iguanren.eu.org/about.html" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="author" content="Bing Gallery" />
+<meta property="og:image" content="https://cn.bing.com/th?id=OHR.FrenchRivieraVillage_ZH-CN2888811422_UHD.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="About Bing Gallery" />
+<meta name="twitter:description" content="A personal gallery of Bing's daily wallpapers — how the site started, what's on it, and the data behind it." />
+<meta name="twitter:image" content="https://cn.bing.com/th?id=OHR.FrenchRivieraVillage_ZH-CN2888811422_UHD.jpg" />
+<meta name="robots" content="index, follow" />
+<link rel="shortcut icon" href="/favicon.svg?v=20260903a" />
+<link rel="preconnect" href="https://cn.bing.com" />
+<link rel="dns-prefetch" href="https://cn.bing.com" />
+<link rel="stylesheet" href="style.css?v=20260911g">
+<style>
+/* ============ About 页专属样式（复用主站 style.css 的基础配色与夜间模式） ============ */
+/* 全宽白色内容带：与主页卡片流区（.gallery-section）同款，
+   让 footer 落在灰色 body 底上，形成「白色内容 + 灰色页脚」的层次区分 */
+.about-band {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+.about-wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 44px 24px 28px;
+}
+
+/* —— 标题区 —— */
+.about-head { margin-bottom: 28px; }
+/* —— 返回首页（页面底部文字链接） —— */
+.about-back {
+    display: inline-block;
+    color: rgba(91, 127, 255, 0.9);
+    font-size: 14px;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+.about-back:hover { opacity: 0.65; }
+:root.night .about-back { color: #8aa8ff; }
+.about-head h1 {
+    font-size: 34px;
+    color: #333;
+    margin: 0 0 16px;
+    letter-spacing: 0.5px;
+    line-height: 1.15;
+}
+.about-head .about-sub {
+    font-size: 15px;
+    color: #8a949b;
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+/* —— 语言切换器（胶囊按钮组） —— */
+.lang-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+.lang-switch {
+    display: inline-flex;
+    align-items: stretch;   /* 按钮撑满容器高度，选中背景上下不留白 */
+    border: 1px solid rgba(91, 127, 255, 0.3);
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.lang-btn {
+    border: none;
+    background: none;
+    color: #7a848b;
+    font-size: 13px;
+    font-family: inherit;
+    line-height: 1.5;       /* 固定行高：中英文字体度量不同，不设会导致两个按钮高度不一 */
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.lang-btn:hover { color: #5b7fff; }
+.lang-btn.active {
+    background: rgba(91, 127, 255, 0.9);
+    color: #fff;
+}
+:root.night .lang-btn { color: #8b949b; }
+:root.night .lang-btn.active { background: rgba(91, 127, 255, 0.85); color: #fff; }
+
+/* —— 今日壁纸展示：宽度与正文对齐，图上叠图标 + 版权描述 —— */
+.about-hero {
+    position: relative;
+    margin: 0 0 34px;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: rgba(0, 0, 0, 0.05);   /* 图片加载前占位，避免跳动 */
+}
+.about-hero img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease;   /* 加载完成淡入，不突兀弹出 */
+}
+.about-hero img.is-loaded { opacity: 1; }
+.about-hero-cap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 24px 16px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 12.5px;
+    text-align: center;
+    pointer-events: none;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* —— 内容区块：无卡片、无分隔线，纯留白区隔 —— */
+.about-section {
+    margin-bottom: 34px;
+}
+.about-section:last-of-type {
+    margin-bottom: 8px;
+}
+.about-section h2 {
+    position: relative;
+    font-size: 17px;
+    color: #333;
+    margin: 0 0 15px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+    padding-left: 13px;
+}
+.about-section h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 16px;
+    border-radius: 2px;
+    background: rgba(91, 127, 255, 0.85);
+}
+.about-section p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #6c767d;
+    margin: 0 0 10px;
+}
+/* 正文首行缩进两字符（中文排版习惯）；提示行独立成行，不缩进 */
+.about-section p:not(.about-note) {
+    text-indent: 2em;
+}
+.about-section p:last-child { margin-bottom: 0; }
+/* 提示行：三角形警示图标 + 小字 */
+.about-section .about-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13.5px;
+    color: #949ea5;
+    line-height: 1.7;
+    margin: 14px 0 0;
+}
+.about-note svg {
+    flex: none;
+    width: 15px;
+    height: 15px;
+    margin-top: 3px;
+    color: #dfa14a;   /* 琥珀色：警示语义 */
+}
+:root.night .about-section .about-note {
+    color: #838b92;
+}
+:root.night .about-note svg { color: #c99a55; }
+.about-section ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.about-section li {
+    position: relative;
+    font-size: 15px;
+    line-height: 1.75;
+    color: #6c767d;
+    padding-left: 16px;
+    margin-bottom: 9px;
+}
+.about-section li:last-child { margin-bottom: 0; }
+.about-section li::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 0.72em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(91, 127, 255, 0.6);
+}
+.about-section li strong { color: #4a5459; font-weight: 600; }
+.about-section a {
+    color: rgba(91, 127, 255, 0.95);
+    text-decoration: none;
+}
+.about-section a:hover { text-decoration: underline; }
+.about-foot {
+    text-align: center;
+    padding: 12px 0 6px;
+}
+
+/* —— 语言显隐：靠 html[lang] 切换，无刷新 —— */
+html[lang^="zh"] .i18n-en { display: none !important; }
+html:not([lang^="zh"]) .i18n-zh { display: none !important; }
+
+/* —— 夜间模式 —— */
+:root.night .about-band {
+    background: rgba(20, 20, 26, 0.88);
+    border-top-color: rgba(255, 255, 255, 0.08);
+}
+:root.night .about-head h1 { color: #e8ebee; }
+:root.night .about-head .about-sub { color: #7d868d; }
+:root.night .about-section h2 { color: #e8ebee; }
+:root.night .about-section p,
+:root.night .about-section li { color: #aeb4bb; }
+:root.night .about-section li strong { color: #d5dade; }
+:root.night .lang-switch { border-color: rgba(91, 127, 255, 0.35); }
+
+@media (max-width: 900px) {
+    .about-section { margin-bottom: 26px; }
+}
+/* 手机端：标题 / 副标题 / 语言切换全部居中 */
+@media (max-width: 767px) {
+    .about-head { text-align: center; }
+    .lang-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+}
+@media (max-width: 480px) {
+    .about-wrap { padding: 30px 14px 20px; }
+    .about-head h1 { font-size: 26px; }
+    .about-section p, .about-section li { font-size: 14px; }
+    .about-hero { border-radius: 12px; margin-bottom: 26px; }
+    .about-hero-cap { font-size: 11.5px; padding: 18px 12px 10px; }
+}
+</style>
+</head>
+<body>
+
+<main class="about-band">
+<div class="about-wrap">
+    <header class="about-head">
+        <h1>About Bing Gallery</h1>
+        <div class="lang-row">
+            <p class="about-sub" data-en="A simple 4K HD wallpaper gallery" data-zh="简简单单的 4K 高清美图壁纸画廊">A simple 4K HD wallpaper gallery</p>
+            <div class="lang-switch" role="group" aria-label="Language">
+                <button type="button" class="lang-btn active" data-lang="en">English</button>
+                <button type="button" class="lang-btn" data-lang="zh">中文简体</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 今日壁纸展示：宽度与正文一致，图上叠图标+版权描述（不显示日期与标题） -->
+    <figure class="about-hero" id="about-hero">
+        <img id="about-hero-img" alt="今日必应壁纸" decoding="async" />
+        <figcaption class="about-hero-cap">
+            <span id="about-hero-caption"></span>
+        </figcaption>
+    </figure>
+
+    <!-- ① 为什么做这个项目 -->
+    <section class="about-section">
+        <h2 class="i18n-en">Why this project exists</h2>
+        <h2 class="i18n-zh">为什么做这个项目</h2>
+        <div class="i18n-en">
+            <p>I started building websites back in 2018, knowing nothing at first — reading tutorials while writing code as I went. I ran a forum, kept a blog, and stuck with it on and off for quite a while. Later, work left me no time to keep updating them, so I archived all the blog content and rebuilt the site. For a long time I couldn't decide what it should be about — until I remembered that back in my blogging days, I liked using Bing wallpapers as the page background. Bing releases an official HD image every day, then quietly swaps it out the next day, which makes it a pain to find again. So I decided to collect the image data, archive it properly, and keep it around for a quiet browse now and then — and that's how Bing Gallery came to be.</p>
+        </div>
+        <div class="i18n-zh">
+            <p>我从 2018 年开始接触建站，那时候什么都不懂，一边查教程一边敲代码，做过论坛，也写过博客，断断续续还是坚持了挺长一段时间。后来因为工作原因，没时间继续更新，就把博客内容全部做了存档，把网站重新改版。最初我很纠结该做什么内容——直到想起以前做博客时，我喜欢拿必应美图当做网站背景。必应每天都会放出一张官方高清图片，第二天却悄悄换掉，想再找就很麻烦。于是我决定把这些图片数据收集起来，归档存好，闲暇时还能翻出来品鉴一番，于是就有了 Bing Gallery 的出现。</p>
+        </div>
+    </section>
+
+    <!-- ② 本项目有何作用 -->
+    <section class="about-section">
+        <h2 class="i18n-en">What this project is for</h2>
+        <h2 class="i18n-zh">本项目有何作用</h2>
+        <div class="i18n-en">
+            <p>The homepage opens on today's image by default — China region first, then US — so what you see each day is always the latest. Below it, the 30 most recent images are shown as a card flow with a lightbox. Anything older is archived automatically: click Archive to browse by month. In the lightbox, you can flip through with the arrow keys or by tapping the left or right side of the screen. See one you like? Download the original straight to your device.</p>
+            <p class="about-note"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg><span>One thing to note: some data was lost during the maintenance upgrade, so the latest data has been re-scraped and archived since August 2026.</span></p>
+        </div>
+        <div class="i18n-zh">
+            <p>首屏默认是当天的图片展示，优先显示国区数据，其次是美区数据——所以你每天打开看到的，都是当天最新的图片内容。首屏下方采用卡片流灯箱的形式来展示最近的 30 张图片。更早的数据自动归档，你可以点击 Archive 按月份浏览。灯箱点开后，默认支持左右按键或者点击屏幕左右区域来翻页浏览。如果看到你喜欢的图片，可以直接”下载原图“到本地。</p>
+            <p class="about-note"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg><span>需要注意的是：由于维护升级过程中部分数据丢失，所以最新数据从 2026 年 8 月开始重新抓取并进行归档。</span></p>
+        </div>
+    </section>
+
+    <!-- ③ 自动化数据更新 -->
+    <section class="about-section">
+        <h2 class="i18n-en">Automatic updates</h2>
+        <h2 class="i18n-zh">自动化数据更新</h2>
+        <div class="i18n-en">
+            <p>This project is fully automated: GitHub Actions pulls the latest official Bing images every day, covering 15 markets worldwide, and runs a full link health check each time — dead images are replaced automatically, so nothing gets lost. Everything collected is kept in full and never deleted — in other words, every image you've seen here will stay here.</p>
+        </div>
+        <div class="i18n-zh">
+            <p>本项目实行全自动化管理，由 GitHub Actions 每天自动抓取必应官方最新的图片，抓取范围覆盖全球 15 个市场，且同步做全量链接体检，失效的图会自动补位，不会出现数据丢失。已抓取的数据本项目全量留存、永不删除——换句话说，你在本项目看到过的图片，都会一直在这里。</p>
+        </div>
+    </section>
+
+    <!-- ④ 免责与版权说明 -->
+    <section class="about-section">
+        <h2 class="i18n-en">Disclaimer &amp; copyright</h2>
+        <h2 class="i18n-zh">免责与版权说明</h2>
+        <div class="i18n-en">
+            <p>All images in this project come from Bing's official source, with copyright belonging to <strong>Microsoft / the original authors</strong>. This project is for personal collection and display only, not for any commercial use. All images are hotlinked from Bing's official CDN — this project stores no image files and claims no rights over the images.</p>
+        </div>
+        <div class="i18n-zh">
+            <p>本项目所有图片均来源于必应官方，版权归属于 <strong>微软 / 原作者</strong> 所有，本项目仅作个人美化与收藏展示，不用于任何商业场景。所有图片均走必应官方 CDN 热链，本项目不存储任何图片文件，也不对图片内容主张任何权利。</p>
+        </div>
+    </section>
+
+    <!-- ⑤ 技术实现与开源 -->
+    <section class="about-section">
+        <h2 class="i18n-en">Tech &amp; open source</h2>
+        <h2 class="i18n-zh">技术实现与开源</h2>
+        <div class="i18n-en">
+            <p>This project is a pure static site — no build step, no framework, no database, zero maintenance. Deployed on EdgeOne Makers, with source code hosted on <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">GitHub</a>. It is open source (the source code is free to use; the copyright of the images used here belongs to their original authors, and they must not be used commercially). Feel free to take a look — if you like it, a <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">star</a> is always welcome. Suggestions are also welcome via <a href="https://github.com/iguanren/Bing-Gallery/issues" target="_blank" rel="noopener">Issues</a>.</p>
+        </div>
+        <div class="i18n-zh">
+            <p>本项目为纯静态站点，无构建、无框架、无数据库、零维护成本，站点部署于 EdgeOne Makers，源码托管自 <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">GitHub</a>，当前项目已开源（源码可自由使用，站内图片数据的版权归原作者所有，请勿商用），欢迎各位围观体验，喜欢的话可以给个 <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">Star</a>，如果你有好的建议，也可以通过 <a href="https://github.com/iguanren/Bing-Gallery/issues" target="_blank" rel="noopener">Issues</a> 向我提出。</p>
+        </div>
+    </section>
+
+    <div class="about-foot">
+        <a class="about-back" href="/" data-en="← Back to Home" data-zh="← 返回首页">← Back to Home</a>
+    </div>
+</div>
+</main>
+
+<!-- 悬浮按钮：夜间模式 / 回到顶部 -->
+<div class="float-actions" id="float-actions">
+    <button id="night-toggle" type="button" class="float-btn" aria-label="夜间模式" title="夜间模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <button id="back-top" type="button" class="float-btn back-top" aria-label="回到顶部" title="回到顶部">
+        <svg class="progress-ring" width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+            <circle class="ring-bg" cx="23" cy="23" r="21.5"></circle>
+            <circle class="ring-fg" cx="23" cy="23" r="21.5"></circle>
+        </svg>
+        <svg class="back-top-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+</div>
+
+<footer class="site-footer">
+    <p class="footer-copy">&copy; 2019 - <span id="year">2026</span> Bing Gallery <span class="fc-keep">Running For <a id="days" rel="nofollow">0</a> Days</span></p>
+</footer>
+
+<script>
+/* 页面加载不恢复旧滚动位置，避免切换后停在中途 */
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
+/* —— 悬浮按钮：夜间模式 + 回到顶部（与主站同款逻辑） —— */
+var floatActions = document.getElementById("float-actions");
+var backTop = document.getElementById("back-top");
+var ringFg = backTop.querySelector(".ring-fg");
+var RING_R = ringFg.r.baseVal.value;
+var RING_C = 2 * Math.PI * RING_R;
+ringFg.style.strokeDasharray = RING_C;
+ringFg.style.strokeDashoffset = RING_C;
+
+function updateScrollUI() {
+  var st = window.scrollY || document.documentElement.scrollTop || 0;
+  var max = document.documentElement.scrollHeight - window.innerHeight;
+  var p = max > 0 ? Math.min(st / max, 1) : 0;
+  ringFg.style.strokeDashoffset = RING_C * (1 - p);
+  if (st > 20) floatActions.classList.add("show");
+  else floatActions.classList.remove("show");
+}
+window.addEventListener("scroll", updateScrollUI, { passive: true });
+window.addEventListener("resize", updateScrollUI);
+backTop.addEventListener("click", function () {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+updateScrollUI();
+
+/* —— 夜间模式：与主站共用偏好 —— */
+var nightBtn = document.getElementById("night-toggle");
+var iconMoon = nightBtn.querySelector(".icon-moon");
+var iconSun = nightBtn.querySelector(".icon-sun");
+var NIGHT_KEY = "iguanren_night";
+
+function applyNight(night) {
+  document.documentElement.classList.toggle("night", night);
+  iconMoon.style.display = night ? "none" : "";
+  iconSun.style.display = night ? "" : "none";
+  try { localStorage.setItem(NIGHT_KEY, night ? "1" : "0"); } catch (e) {}
+}
+
+nightBtn.addEventListener("click", function () {
+  applyNight(!document.documentElement.classList.contains("night"));
+});
+
+try {
+  if (localStorage.getItem(NIGHT_KEY) === "1") applyNight(true);
+} catch (e) {}
+
+/* —— 语言切换：默认英文，切换零刷新（只切 html[lang]，CSS 控制显隐） —— */
+var LANG_KEY = "iguanren_lang";
+
+function applyLang(lang) {
+  document.documentElement.lang = (lang === "zh") ? "zh-CN" : "en";
+  document.querySelectorAll("[data-en][data-zh]").forEach(function (el) {
+    el.textContent = el.dataset[lang === "zh" ? "zh" : "en"];
+  });
+  document.querySelectorAll(".lang-btn").forEach(function (b) {
+    b.classList.toggle("active", b.dataset.lang === lang);
+  });
+  /* 浏览器标签标题固定为 About Bing Gallery，不随语言变化 */
+}
+
+var savedLang = localStorage.getItem(LANG_KEY);
+if (savedLang !== "zh" && savedLang !== "en") savedLang = "en";   /* 默认英文 */
+applyLang(savedLang);
+
+document.querySelectorAll(".lang-btn").forEach(function (btn) {
+  btn.addEventListener("click", function () {
+    var lang = btn.dataset.lang;
+    localStorage.setItem(LANG_KEY, lang);
+    applyLang(lang);
+  });
+});
+
+/* —— 底部：运行天数（与主站同一算法，2019-06-16 起算）+ 版权年份 —— */
+var s1 = new Date("2019-06-16T00:00:00+08:00");
+var days = Math.floor((Date.now() - s1.getTime()) / 86400000);
+var dEl = document.getElementById("days");
+if (dEl) dEl.textContent = days;
+var y = document.getElementById("year");
+if (y) y.textContent = new Date().getFullYear();
+
+/* —— 今日壁纸展示：取 data.json 最新一条（≤ 今日），只叠版权描述 —— */
+(function () {
+  var hero = document.getElementById("about-hero");
+  var img = document.getElementById("about-hero-img");
+  var cap = document.getElementById("about-hero-caption");
+  if (!hero || !img) return;
+
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  var now = new Date();
+  var todayStr = "" + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate());
+
+  fetch("data.json", { cache: "no-cache" })
+    .then(function (r) {
+      if (!r.ok) throw new Error("data.json " + r.status);
+      return r.json();
+    })
+    .then(function (d) {
+      var items = d.items || d.images || [];
+      var item = null;
+      for (var i = 0; i < items.length; i++) {
+        if (!items[i].date || items[i].date <= todayStr) { item = items[i]; break; }
+      }
+      if (!item) throw new Error("no item");
+      var url = item.hero || (item.urlbase
+        ? "https://cn.bing.com" + item.urlbase + "_1920x1080.jpg"
+        : item.full);
+      if (!url) throw new Error("no url");
+      img.addEventListener("load", function () { img.classList.add("is-loaded"); });
+      img.addEventListener("error", function () { hero.style.display = "none"; });
+      img.src = url;
+      if (cap) cap.textContent = item.copyright || "";
+    })
+    .catch(function () {
+      hero.style.display = "none";   /* 拉取失败或没图：整块隐藏，不留空框 */
+    });
+})();
+</script>
+</body>
+</html>
