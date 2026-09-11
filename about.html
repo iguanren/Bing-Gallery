@@ -18,30 +18,16 @@
 
 /* —— 标题区 —— */
 .about-head { margin-bottom: 28px; }
-/* —— 返回首页（页面底部胶囊按钮） —— */
+/* —— 返回首页（页面底部文字链接） —— */
 .about-back {
     display: inline-block;
-    padding: 7px 16px;
-    border: 1px solid rgba(91, 127, 255, 0.3);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.55);
-    color: rgba(91, 127, 255, 0.95);
-    font-size: 13px;
-    line-height: 1.2;
+    color: rgba(91, 127, 255, 0.9);
+    font-size: 14px;
     text-decoration: none;
-    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s ease;
 }
-.about-back:hover {
-    background: rgba(91, 127, 255, 0.12);
-    border-color: rgba(91, 127, 255, 0.55);
-    transform: translateY(-1px);
-}
-:root.night .about-back {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(91, 127, 255, 0.4);
-    color: #8aa8ff;
-}
-:root.night .about-back:hover { background: rgba(91, 127, 255, 0.2); }
+.about-back:hover { opacity: 0.65; }
+:root.night .about-back { color: #8aa8ff; }
 .about-head h1 {
     font-size: 34px;
     color: #333;
@@ -90,16 +76,18 @@
 :root.night .lang-btn { color: #8b949b; }
 :root.night .lang-btn.active { background: rgba(91, 127, 255, 0.85); color: #fff; }
 
-/* —— 内容卡片：标题在上，正文在下 —— */
-.about-card {
-    background: #fff;
-    border-radius: 16px;
-    padding: 26px 30px;
-    margin-bottom: 16px;
-    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.045);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+/* —— 内容区块：无卡片，细线分隔 + 留白 —— */
+.about-section {
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 }
-.about-card h2 {
+.about-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 6px;
+    margin-bottom: 4px;
+}
+.about-section h2 {
     position: relative;
     font-size: 17px;
     color: #333;
@@ -109,7 +97,7 @@
     line-height: 1.5;
     padding-left: 13px;
 }
-.about-card h2::before {
+.about-section h2::before {
     content: "";
     position: absolute;
     left: 0;
@@ -120,16 +108,16 @@
     border-radius: 2px;
     background: rgba(91, 127, 255, 0.85);
 }
-.about-card p {
+.about-section p {
     font-size: 15px;
     line-height: 1.8;
     color: #6c767d;
     margin: 0 0 10px;
     max-width: 900px;
 }
-.about-card p:last-child { margin-bottom: 0; }
+.about-section p:last-child { margin-bottom: 0; }
 /* 卡片内轻量提示行：不用大卡片包，一道细竖线 + 小字 */
-.about-card .about-note {
+.about-section .about-note {
     font-size: 13.5px;
     color: #949ea5;
     line-height: 1.7;
@@ -137,17 +125,17 @@
     padding-left: 11px;
     margin: 14px 0 0;
 }
-:root.night .about-card .about-note {
+:root.night .about-section .about-note {
     color: #838b92;
     border-left-color: rgba(91, 127, 255, 0.4);
 }
-.about-card ul {
+.about-section ul {
     margin: 0;
     padding: 0;
     list-style: none;
     max-width: 900px;
 }
-.about-card li {
+.about-section li {
     position: relative;
     font-size: 15px;
     line-height: 1.75;
@@ -155,8 +143,8 @@
     padding-left: 16px;
     margin-bottom: 9px;
 }
-.about-card li:last-child { margin-bottom: 0; }
-.about-card li::before {
+.about-section li:last-child { margin-bottom: 0; }
+.about-section li::before {
     content: "";
     position: absolute;
     left: 2px;
@@ -166,12 +154,12 @@
     border-radius: 50%;
     background: rgba(91, 127, 255, 0.6);
 }
-.about-card li strong { color: #4a5459; font-weight: 600; }
-.about-card a {
+.about-section li strong { color: #4a5459; font-weight: 600; }
+.about-section a {
     color: rgba(91, 127, 255, 0.95);
     text-decoration: none;
 }
-.about-card a:hover { text-decoration: underline; }
+.about-section a:hover { text-decoration: underline; }
 .about-foot {
     text-align: center;
     padding: 12px 0 6px;
@@ -184,18 +172,15 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 /* —— 夜间模式 —— */
 :root.night .about-head h1 { color: #e8ebee; }
 :root.night .about-head .about-sub { color: #7d868d; }
-:root.night .about-card {
-    background: #232329;
-    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.25);
-}
-:root.night .about-card h2 { color: #e8ebee; }
-:root.night .about-card p,
-:root.night .about-card li { color: #aeb4bb; }
-:root.night .about-card li strong { color: #d5dade; }
+:root.night .about-section { border-bottom-color: rgba(255, 255, 255, 0.1); }
+:root.night .about-section h2 { color: #e8ebee; }
+:root.night .about-section p,
+:root.night .about-section li { color: #aeb4bb; }
+:root.night .about-section li strong { color: #d5dade; }
 :root.night .lang-switch { border-color: rgba(91, 127, 255, 0.35); }
 
 @media (max-width: 900px) {
-    .about-card { padding: 22px 22px; }
+    .about-section { padding-bottom: 24px; margin-bottom: 24px; }
 }
 /* 手机端：标题 / 副标题 / 语言切换全部居中 */
 @media (max-width: 767px) {
@@ -209,8 +194,7 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 @media (max-width: 480px) {
     .about-wrap { padding: 30px 14px 20px; }
     .about-head h1 { font-size: 26px; }
-    .about-card { padding: 19px 17px; }
-    .about-card p, .about-card li { font-size: 14px; }
+    .about-section p, .about-section li { font-size: 14px; }
 }
 </style>
 </head>
@@ -229,7 +213,7 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
     </header>
 
     <!-- ① 为什么会出现这个网站 -->
-    <section class="about-card">
+    <section class="about-section">
         <h2 class="i18n-en">Why this site exists</h2>
         <h2 class="i18n-zh">为什么会出现这个网站</h2>
         <div class="i18n-en">
@@ -243,7 +227,7 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
     </section>
 
     <!-- ② 这个网站有什么用 -->
-    <section class="about-card">
+    <section class="about-section">
         <h2 class="i18n-en">What's on the site</h2>
         <h2 class="i18n-zh">这个网站有什么用</h2>
         <div class="i18n-en">
@@ -261,7 +245,7 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
     </section>
 
     <!-- ③ 自动化数据更新 -->
-    <section class="about-card">
+    <section class="about-section">
         <h2 class="i18n-en">Automatic updates</h2>
         <h2 class="i18n-zh">自动化数据更新</h2>
         <div class="i18n-en">
@@ -275,7 +259,7 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
     </section>
 
     <!-- ④ 免责与版权说明 -->
-    <section class="about-card">
+    <section class="about-section">
         <h2 class="i18n-en">Disclaimer &amp; copyright</h2>
         <h2 class="i18n-zh">免责与版权说明</h2>
         <div class="i18n-en">
@@ -289,7 +273,7 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
     </section>
 
     <!-- ⑤ 技术实现与开源 -->
-    <section class="about-card">
+    <section class="about-section">
         <h2 class="i18n-en">Tech &amp; open source</h2>
         <h2 class="i18n-zh">技术实现与开源</h2>
         <div class="i18n-en">
@@ -303,9 +287,24 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
     </section>
 
     <div class="about-foot">
-        <a class="about-back" href="/" data-en="Back to Home" data-zh="返回首页">Back to Home</a>
+        <a class="about-back" href="/" data-en="← Back to Home" data-zh="← 返回首页">← Back to Home</a>
     </div>
 </main>
+
+<!-- 悬浮按钮：夜间模式 / 回到顶部 -->
+<div class="float-actions" id="float-actions">
+    <button id="night-toggle" type="button" class="float-btn" aria-label="夜间模式" title="夜间模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <button id="back-top" type="button" class="float-btn back-top" aria-label="回到顶部" title="回到顶部">
+        <svg class="progress-ring" width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+            <circle class="ring-bg" cx="23" cy="23" r="21.5"></circle>
+            <circle class="ring-fg" cx="23" cy="23" r="21.5"></circle>
+        </svg>
+        <svg class="back-top-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+</div>
 
 <footer class="site-footer">
     <p class="footer-copy">&copy; 2019 - <span id="year">2026</span> Bing Gallery <span class="fc-keep">Running For <a id="days" rel="nofollow">0</a> Days</span></p>
@@ -315,11 +314,50 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 /* 页面加载不恢复旧滚动位置，避免切换后停在中途 */
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 
-/* —— 夜间模式：与主站共用偏好 —— */
-var NIGHT_KEY = "iguanren_night";
-if (localStorage.getItem(NIGHT_KEY) === "1") {
-  document.documentElement.classList.add("night");
+/* —— 悬浮按钮：夜间模式 + 回到顶部（与主站同款逻辑） —— */
+var floatActions = document.getElementById("float-actions");
+var backTop = document.getElementById("back-top");
+var ringFg = backTop.querySelector(".ring-fg");
+var RING_R = ringFg.r.baseVal.value;
+var RING_C = 2 * Math.PI * RING_R;
+ringFg.style.strokeDasharray = RING_C;
+ringFg.style.strokeDashoffset = RING_C;
+
+function updateScrollUI() {
+  var st = window.scrollY || document.documentElement.scrollTop || 0;
+  var max = document.documentElement.scrollHeight - window.innerHeight;
+  var p = max > 0 ? Math.min(st / max, 1) : 0;
+  ringFg.style.strokeDashoffset = RING_C * (1 - p);
+  if (st > 20) floatActions.classList.add("show");
+  else floatActions.classList.remove("show");
 }
+window.addEventListener("scroll", updateScrollUI, { passive: true });
+window.addEventListener("resize", updateScrollUI);
+backTop.addEventListener("click", function () {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+updateScrollUI();
+
+/* —— 夜间模式：与主站共用偏好 —— */
+var nightBtn = document.getElementById("night-toggle");
+var iconMoon = nightBtn.querySelector(".icon-moon");
+var iconSun = nightBtn.querySelector(".icon-sun");
+var NIGHT_KEY = "iguanren_night";
+
+function applyNight(night) {
+  document.documentElement.classList.toggle("night", night);
+  iconMoon.style.display = night ? "none" : "";
+  iconSun.style.display = night ? "" : "none";
+  try { localStorage.setItem(NIGHT_KEY, night ? "1" : "0"); } catch (e) {}
+}
+
+nightBtn.addEventListener("click", function () {
+  applyNight(!document.documentElement.classList.contains("night"));
+});
+
+try {
+  if (localStorage.getItem(NIGHT_KEY) === "1") applyNight(true);
+} catch (e) {}
 
 /* —— 语言切换：默认英文，切换零刷新（只切 html[lang]，CSS 控制显隐） —— */
 var LANG_KEY = "iguanren_lang";
