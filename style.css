@@ -294,10 +294,10 @@ footer p {
 .archive-box {
     width: min(92vw, 560px);
     max-height: 80vh;
-    background: rgba(255, 255, 255, 0.68);
-    backdrop-filter: blur(24px) saturate(1.8);
-    -webkit-backdrop-filter: blur(24px) saturate(1.8);
-    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(22px) saturate(1.8);
+    -webkit-backdrop-filter: blur(22px) saturate(1.8);
+    border: 1px solid rgba(255, 255, 255, 0.45);
     border-radius: 16px;
     overflow: hidden;
     display: flex;
@@ -305,8 +305,8 @@ footer p {
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
 }
 :root.night .archive-box {
-    background: rgba(30, 30, 36, 0.72);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(30, 30, 36, 0.55);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .archive-head {
