@@ -18,26 +18,34 @@
 
 /* —— 标题区 —— */
 .about-head { margin-bottom: 28px; }
-.head-main {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px 18px;
-    margin-bottom: 14px;
-}
+/* —— 返回首页（页面底部胶囊按钮） —— */
 .about-back {
-    color: rgba(91, 127, 255, 0.9);
-    font-size: 14px;
+    display: inline-block;
+    padding: 7px 16px;
+    border: 1px solid rgba(91, 127, 255, 0.3);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.55);
+    color: rgba(91, 127, 255, 0.95);
+    font-size: 13px;
+    line-height: 1.2;
     text-decoration: none;
-    margin-left: auto;      /* 同行靠右；换行时也贴右侧，不左垂 */
-    transition: opacity 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
-.about-back:hover { opacity: 0.7; }
+.about-back:hover {
+    background: rgba(91, 127, 255, 0.12);
+    border-color: rgba(91, 127, 255, 0.55);
+    transform: translateY(-1px);
+}
+:root.night .about-back {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(91, 127, 255, 0.4);
+    color: #8aa8ff;
+}
+:root.night .about-back:hover { background: rgba(91, 127, 255, 0.2); }
 .about-head h1 {
     font-size: 34px;
     color: #333;
-    margin: 0;
+    margin: 0 0 16px;
     letter-spacing: 0.5px;
     line-height: 1.15;
 }
@@ -82,12 +90,8 @@
 :root.night .lang-btn { color: #8b949b; }
 :root.night .lang-btn.active { background: rgba(91, 127, 255, 0.85); color: #fff; }
 
-/* —— 内容卡片：宽幅两栏（左标题 / 右正文） —— */
+/* —— 内容卡片：标题在上，正文在下 —— */
 .about-card {
-    display: grid;
-    grid-template-columns: 230px minmax(0, 1fr);
-    column-gap: 32px;
-    align-items: start;
     background: #fff;
     border-radius: 16px;
     padding: 26px 30px;
@@ -99,7 +103,7 @@
     position: relative;
     font-size: 17px;
     color: #333;
-    margin: 0;
+    margin: 0 0 15px;
     font-weight: 600;
     letter-spacing: 0.3px;
     line-height: 1.5;
@@ -109,7 +113,8 @@
     content: "";
     position: absolute;
     left: 0;
-    top: 0.42em;
+    top: 50%;
+    transform: translateY(-50%);
     width: 4px;
     height: 16px;
     border-radius: 2px;
@@ -120,14 +125,27 @@
     line-height: 1.8;
     color: #6c767d;
     margin: 0 0 10px;
-    max-width: 760px;
+    max-width: 900px;
 }
 .about-card p:last-child { margin-bottom: 0; }
+/* 卡片内轻量提示行：不用大卡片包，一道细竖线 + 小字 */
+.about-card .about-note {
+    font-size: 13.5px;
+    color: #949ea5;
+    line-height: 1.7;
+    border-left: 3px solid rgba(91, 127, 255, 0.3);
+    padding-left: 11px;
+    margin: 14px 0 0;
+}
+:root.night .about-card .about-note {
+    color: #838b92;
+    border-left-color: rgba(91, 127, 255, 0.4);
+}
 .about-card ul {
     margin: 0;
     padding: 0;
     list-style: none;
-    max-width: 760px;
+    max-width: 900px;
 }
 .about-card li {
     position: relative;
@@ -154,12 +172,9 @@
     text-decoration: none;
 }
 .about-card a:hover { text-decoration: underline; }
-.about-foot-note {
+.about-foot {
     text-align: center;
-    font-size: 13px;
-    color: #a3adb4;
-    padding: 10px 0 4px;
-    letter-spacing: 0.3px;
+    padding: 12px 0 6px;
 }
 
 /* —— 语言显隐：靠 html[lang] 切换，无刷新 —— */
@@ -177,14 +192,18 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 :root.night .about-card p,
 :root.night .about-card li { color: #aeb4bb; }
 :root.night .about-card li strong { color: #d5dade; }
-:root.night .about-foot-note { color: #6f777d; }
 :root.night .lang-switch { border-color: rgba(91, 127, 255, 0.35); }
 
 @media (max-width: 900px) {
-    .about-card {
-        grid-template-columns: 1fr;
-        row-gap: 12px;
-        padding: 22px 22px;
+    .about-card { padding: 22px 22px; }
+}
+/* 手机端：标题 / 副标题 / 语言切换全部居中 */
+@media (max-width: 767px) {
+    .about-head { text-align: center; }
+    .lang-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
     }
 }
 @media (max-width: 480px) {
@@ -199,10 +218,7 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
 
 <main class="about-wrap">
     <header class="about-head">
-        <div class="head-main">
-            <h1>About Bing Gallery</h1>
-            <a class="about-back" href="/" data-en="Back to Home" data-zh="返回首页">Back to Home</a>
-        </div>
+        <h1>About Bing Gallery</h1>
         <div class="lang-row">
             <p class="about-sub" data-en="A simple 4K HD wallpaper gallery" data-zh="简简单单的 4K 高清美图壁纸画廊">A simple 4K HD wallpaper gallery</p>
             <div class="lang-switch" role="group" aria-label="Language">
@@ -234,11 +250,13 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
             <p>The homepage opens on today's wallpaper — China market first, then US — so what you see each day is always the latest.</p>
             <p>Below it, a card flow shows the 30 most recent wallpapers; anything older is archived. Hit Archive to browse by month.</p>
             <p>In the lightbox, arrow keys flip through images, and you can also tap the left or right side of the screen. See one you like? Download the full-resolution original straight to your device.</p>
+            <p class="about-note">One thing to note: some data was lost during maintenance along the way, so the latest data started accumulating again from August 2026.</p>
         </div>
         <div class="i18n-zh">
             <p>我把每天的新壁纸放在网站首屏，优先显示中区图片，其次是美区图片——所以你每天打开看到的，都是当天最新的壁纸数据。</p>
             <p>首屏下方是一条卡片流，展示最近的 30 张壁纸。更早的图片做了归档，点 Archive 可以按月份浏览。</p>
             <p>灯箱点开后，支持键盘左右翻页，也支持点击屏幕左/右区域翻页浏览。看到喜欢的图片，可以直接下载原图到你的设备。</p>
+            <p class="about-note">需要注意的是：由于维护过程中部分数据丢失，所以最新数据从 2026 年 8 月开始重新积累。</p>
         </div>
     </section>
 
@@ -284,7 +302,9 @@ html:not([lang^="zh"]) .i18n-zh { display: none !important; }
         </div>
     </section>
 
-    <p class="about-foot-note" data-en="Thanks to Bing, for the picture of the day." data-zh="感谢必应，每天的那张图。">Thanks to Bing, for the picture of the day.</p>
+    <div class="about-foot">
+        <a class="about-back" href="/" data-en="Back to Home" data-zh="返回首页">Back to Home</a>
+    </div>
 </main>
 
 <footer class="site-footer">
@@ -312,7 +332,7 @@ function applyLang(lang) {
   document.querySelectorAll(".lang-btn").forEach(function (b) {
     b.classList.toggle("active", b.dataset.lang === lang);
   });
-  document.title = (lang === "zh") ? "关于 Bing Gallery" : "About Bing Gallery";
+  /* 浏览器标签标题固定为 About Bing Gallery，不随语言变化 */
 }
 
 var savedLang = localStorage.getItem(LANG_KEY);
