@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover">
+  <title>Bing Gallery - 4K HD Wallpaper Gallery</title>
+  <meta name="description" content="Bing Gallery 专注收录必应（Bing）官方每日高清美图，4K 超清无水印免费下载，历史壁纸按月归档，一键回看昨日、今日及过往全部必应美图壁纸画廊。">
+  <meta name="keywords" content="Bing Gallery,Bing壁纸,Bing美图,必应壁纸,必应美图,必应每日壁纸,每日壁纸,高清壁纸,4K壁纸,4K高清壁纸,高清美图,壁纸画廊,壁纸下载,美图下载,无水印壁纸,壁纸归档,必应官方壁纸">
+  <link rel="canonical" href="https://iguanren.eu.org/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bing Gallery" />
+  <meta property="og:title" content="Bing Gallery - 4K 高清美图壁纸画廊" />
+  <meta property="og:description" content="Bing Gallery 每日收录必应官方高清美图，4K 超清无水印免费下载，历史壁纸按月归档一键回看。" />
+  <meta property="og:url" content="https://iguanren.eu.org/" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta name="author" content="Bing Gallery" />
+  <meta property="og:image" content="https://cn.bing.com/th?id=OHR.MisurinaPeak_ZH-CN3877105161_UHD.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bing Gallery - 4K 高清美图壁纸画廊" />
+  <meta name="twitter:description" content="Bing Gallery 每日收录必应官方高清美图，4K 超清无水印免费下载，历史壁纸按月归档一键回看。" />
+  <meta name="twitter:image" content="https://cn.bing.com/th?id=OHR.MisurinaPeak_ZH-CN3877105161_UHD.jpg" />
+  <meta name="robots" content="index, follow" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Bing Gallery",
+    "alternateName": "必应美图壁纸画廊",
+    "url": "https://iguanren.eu.org/",
+    "description": "Bing Gallery 每日收录必应官方高清美图，4K 超清无水印免费下载，支持历史壁纸按月归档浏览。",
+    "inLanguage": "zh-CN"
+  }
+  </script>
+  <link rel="shortcut icon" href="/favicon.svg?v=20260903a" />
+  <link rel="preconnect" href="https://cn.bing.com" />
+  <link rel="dns-prefetch" href="https://cn.bing.com" />
+  <link rel="stylesheet" href="style.css?v=20260912c">
+  <script>
+  /* 尽早应用语言偏好：默认英文，仅当用户选过中文时才切 html[lang]（配合 CSS 的 .i18n-zh/.i18n-en 显隐，零闪烁） */
+  (function () {
+    try {
+      if (localStorage.getItem("iguanren_lang") === "zh") document.documentElement.lang = "zh-CN";
+    } catch (e) {}
+  })();
+  </script>
+  <script src="site.js?v=20260911l"></script>
+</head>
+
+<body>
+
+  <h1 class="sr-only"><span class="i18n-zh">Bing Gallery - 4K 高清美图壁纸画廊，必应官方每日壁纸免费下载与历史归档</span><span class="i18n-en">Bing Gallery - 4K HD wallpaper gallery, free daily Bing wallpapers with full archive</span></h1>
+
+  <!-- 首屏 Hero：纯背景大图 + 图内底部悬浮信息（仅版权描述，沉浸模式无标题无日期） -->
+  <div id="main" class="container">
+    <div class="photo-bg-info">
+      <nav class="pbi-nav">
+        <a href="/" id="pbi-home" class="pbi-nav-link"><span class="i18n-zh">首页</span><span class="i18n-en">Home</span></a>
+        <span class="pbi-nav-sep">-</span>
+        <a href="#" id="pbi-archive" class="pbi-nav-link"><span class="i18n-zh">归档</span><span class="i18n-en">Archive</span></a>
+        <span class="pbi-nav-sep">-</span>
+        <a href="/about.html" class="pbi-nav-link"><span class="i18n-zh">关于</span><span class="i18n-en">About</span></a>
+      </nav>
+      <div class="pbi-copyright"></div>
+    </div>
+  </div>
+
+  <!-- 卡片流 -->
+  <section id="gallery" class="gallery-section">
+    <div class="filter-bar" id="filter-bar">
+      <span class="filter-text" id="filter-text"></span>
+      <button type="button" class="filter-home" id="filter-home"><span class="i18n-zh">回到首页</span><span class="i18n-en">Back to home</span></button>
+    </div>
+    <div id="gallery-grid" class="gallery-grid"></div>
+  </section>
+
+  <!-- 历史壁纸归档弹窗 -->
+  <div class="archive-mask" id="archive-mask">
+    <div class="archive-box">
+      <div class="archive-head">
+        <span><span class="i18n-zh">归档</span><span class="i18n-en">Archive</span></span>
+        <button type="button" class="modal-close" id="archive-close" data-i18n-aria="close" aria-label="关闭">✕</button>
+      </div>
+      <div class="archive-body" id="archive-months"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p class="footer-copy">&copy; 2019 - <span id="year">2026</span> Bing Gallery <span class="fc-keep" id="uptime"></span></p>
+  </footer>
+
+  <!-- 卡片流灯箱 -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-stage">
+      <div class="lightbox-toolbar">
+        <button id="lb-download" type="button" data-i18n="download">下载原图</button>
+        <button id="lb-close" type="button" data-i18n-aria="close" aria-label="关闭">✕</button>
+      </div>
+      <div class="lightbox-img-wrap" id="lb-img-wrap">
+        <div class="lightbox-loading" id="lb-loading">
+          <div class="wp-spin"></div>
+          <p><span class="i18n-zh">正在加载 4K 原图...</span><span class="i18n-en">Loading 4K original...</span></p>
+        </div>
+        <img id="lb-img" alt="Bing wallpaper" data-i18n-alt="fallbackTitle" />
+      </div>
+      <div class="lightbox-info">
+        <p class="lb-line"><span id="lb-date"></span><span class="lb-sep">·</span><span id="lb-title"></span></p>
+        <p class="lb-copyright" id="lb-copyright"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 悬浮按钮：语言切换 / 夜间模式 / 回到顶部 -->
+  <div class="float-actions" id="float-actions">
+    <button id="lang-toggle" type="button" class="float-btn lang-toggle" aria-label="语言" title="语言">
+      <span class="lang-alt-zh">中</span><span class="lang-alt-en">EN</span>
+    </button>
+    <button id="night-toggle" type="button" class="float-btn" data-i18n-aria="nightMode" data-i18n-title="nightMode" aria-label="夜间模式" title="夜间模式">
+      <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <button id="back-top" type="button" class="float-btn back-top" data-i18n-aria="backTop" data-i18n-title="backTop" aria-label="回到顶部" title="回到顶部">
+      <svg class="progress-ring" width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+        <circle class="ring-bg" cx="23" cy="23" r="21.5"></circle>
+        <circle class="ring-fg" cx="23" cy="23" r="21.5"></circle>
+      </svg>
+      <svg class="back-top-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+  </div>
+
+<script src="gallery.js?v=20260911l"></script>
+</body>
+</html>

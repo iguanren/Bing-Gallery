@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Bing Gallery</title>
+<meta name="description" content="About Bing Gallery — a personal gallery of Bing's daily wallpapers. Daily auto-collected, 4K watermark-free downloads, full monthly archive. Data source and copyright info.">
+<link rel="canonical" href="https://iguanren.eu.org/about.html" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Bing Gallery" />
+<meta property="og:title" content="About Bing Gallery" />
+<meta property="og:description" content="A personal gallery of Bing's daily wallpapers — how the site started, what's on it, and the data behind it." />
+<meta property="og:url" content="https://iguanren.eu.org/about.html" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="author" content="Bing Gallery" />
+<meta property="og:image" content="https://cn.bing.com/th?id=OHR.MisurinaPeak_ZH-CN3877105161_UHD.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="About Bing Gallery" />
+<meta name="twitter:description" content="A personal gallery of Bing's daily wallpapers — how the site started, what's on it, and the data behind it." />
+<meta name="twitter:image" content="https://cn.bing.com/th?id=OHR.MisurinaPeak_ZH-CN3877105161_UHD.jpg" />
+<meta name="robots" content="index, follow" />
+<link rel="shortcut icon" href="/favicon.svg?v=20260903a" />
+<link rel="preconnect" href="https://cn.bing.com" />
+<link rel="dns-prefetch" href="https://cn.bing.com" />
+<link rel="stylesheet" href="style.css?v=20260912c">
+<script>
+/* 尽早应用语言偏好：默认英文，仅当用户选过中文时才切 html[lang]（配合 CSS 的 .i18n-zh/.i18n-en 显隐，零闪烁） */
+(function () {
+  try {
+    if (localStorage.getItem("iguanren_lang") === "zh") document.documentElement.lang = "zh-CN";
+  } catch (e) {}
+})();
+</script>
+<script src="site.js?v=20260911l"></script>
+</head>
+<body>
+
+<main class="about-band">
+<div class="about-wrap">
+    <header class="about-head">
+        <h1>About Bing Gallery</h1>
+        <p class="about-sub" data-en="A simple 4K HD wallpaper gallery" data-zh="简简单单的 4K 高清美图壁纸画廊">A simple 4K HD wallpaper gallery</p>
+    </header>
+
+    <!-- 今日壁纸展示：宽度与正文一致，图上叠图标+版权描述（不显示日期与标题） -->
+    <figure class="about-hero" id="about-hero">
+        <img id="about-hero-img" alt="Today's Bing wallpaper" decoding="async" />
+        <figcaption class="about-hero-cap">
+            <span id="about-hero-caption"></span>
+        </figcaption>
+    </figure>
+
+    <!-- ① 为什么做这个项目 -->
+    <section class="about-section">
+        <h2 class="i18n-en">Why this project exists</h2>
+        <h2 class="i18n-zh">为什么做这个项目</h2>
+        <div class="i18n-en">
+            <p>I started building websites back in 2018, knowing nothing at first — reading tutorials while writing code as I went. I ran a forum, kept a blog, and stuck with it on and off for quite a while. Later, work left me no time to keep updating them, so I archived all the blog content and rebuilt the site. For a long time I couldn't decide what it should be about — until I remembered that back in my blogging days, I liked using Bing wallpapers as the page background. Bing releases an official HD image every day, then quietly swaps it out the next day, which makes it a pain to find again. So I decided to collect the image data, archive it properly, and keep it around for a quiet browse now and then — and that's how Bing Gallery came to be.</p>
+        </div>
+        <div class="i18n-zh">
+            <p>我从 2018 年开始接触建站，那时候什么都不懂，一边查教程一边敲代码，做过论坛，也写过博客，断断续续还是坚持了挺长一段时间。后来因为工作原因，没时间继续更新，就把博客内容全部做了存档，把网站重新改版。最初我很纠结该做什么内容——直到想起以前做博客时，我喜欢拿必应美图当做网站背景。必应每天都会放出一张官方高清图片，第二天却悄悄换掉，想再找就很麻烦。于是我决定把这些图片数据收集起来，归档存好，闲暇时还能翻出来品鉴一番，于是就有了 Bing Gallery 的出现。</p>
+        </div>
+    </section>
+
+    <!-- ② 本项目有何作用 -->
+    <section class="about-section">
+        <h2 class="i18n-en">What this project is for</h2>
+        <h2 class="i18n-zh">本项目有何作用</h2>
+        <div class="i18n-en">
+            <p>The homepage opens on today's image by default — China region first, then US — so what you see each day is always the latest. Below it, the 30 most recent images are shown as a card flow with a lightbox. Anything older is archived automatically: click Archive to browse by month. In the lightbox, you can flip through with the arrow keys or by tapping the left or right side of the screen. See one you like? Download the original straight to your device.</p>
+            <p class="about-note"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg><span>One thing to note: some data was lost during the maintenance upgrade, so the latest data has been re-scraped and archived since August 2026.</span></p>
+        </div>
+        <div class="i18n-zh">
+            <p>首屏默认是当天的图片展示，优先显示国区数据，其次是美区数据——所以你每天打开看到的，都是当天最新的图片内容。首屏下方采用卡片流灯箱的形式来展示最近的 30 张图片。更早的数据自动归档，你可以点击 Archive 按月份浏览。灯箱点开后，默认支持左右按键或者点击屏幕左右区域来翻页浏览。如果看到你喜欢的图片，可以直接”下载原图“到本地。</p>
+            <p class="about-note"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12" y2="17.01"/></svg><span>需要注意的是：由于维护升级过程中部分数据丢失，所以最新数据从 2026 年 8 月开始重新抓取并进行归档。</span></p>
+        </div>
+    </section>
+
+    <!-- ③ 自动化数据更新 -->
+    <section class="about-section">
+        <h2 class="i18n-en">Automatic updates</h2>
+        <h2 class="i18n-zh">自动化数据更新</h2>
+        <div class="i18n-en">
+            <p>This project is fully automated: GitHub Actions pulls the latest official Bing images every day, covering 15 markets worldwide, and runs a full link health check each time — dead images are replaced automatically, so nothing gets lost. Everything collected is kept in full and never deleted — in other words, every image you've seen here will stay here.</p>
+        </div>
+        <div class="i18n-zh">
+            <p>本项目实行全自动化管理，由 GitHub Actions 每天自动抓取必应官方最新的图片，抓取范围覆盖全球 15 个市场，且同步做全量链接体检，失效的图会自动补位，不会出现数据丢失。已抓取的数据本项目全量留存、永不删除——换句话说，你在本项目看到过的图片，都会一直在这里。</p>
+        </div>
+    </section>
+
+    <!-- ④ 免责与版权说明 -->
+    <section class="about-section">
+        <h2 class="i18n-en">Disclaimer &amp; copyright</h2>
+        <h2 class="i18n-zh">免责与版权说明</h2>
+        <div class="i18n-en">
+            <p>All images in this project come from Bing's official source, with copyright belonging to <strong>Microsoft / the original authors</strong>. This project is for personal collection and display only, not for any commercial use. All images are hotlinked from Bing's official CDN — this project stores no image files and claims no rights over the images.</p>
+        </div>
+        <div class="i18n-zh">
+            <p>本项目所有图片均来源于必应官方，版权归属于 <strong>微软 / 原作者</strong> 所有，本项目仅作个人美化与收藏展示，不用于任何商业场景。所有图片均走必应官方 CDN 热链，本项目不存储任何图片文件，也不对图片内容主张任何权利。</p>
+        </div>
+    </section>
+
+    <!-- ⑤ 技术实现与开源 -->
+    <section class="about-section">
+        <h2 class="i18n-en">Tech &amp; open source</h2>
+        <h2 class="i18n-zh">技术实现与开源</h2>
+        <div class="i18n-en">
+            <p>This project is a pure static site — no build step, no framework, no database, zero maintenance. Deployed on EdgeOne Makers, with source code hosted on <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">GitHub</a>. It is open source (the source code is free to use; the copyright of the images used here belongs to their original authors, and they must not be used commercially). Feel free to take a look — if you like it, a <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">star</a> is always welcome. Suggestions are also welcome via <a href="https://github.com/iguanren/Bing-Gallery/issues" target="_blank" rel="noopener">Issues</a>.</p>
+        </div>
+        <div class="i18n-zh">
+            <p>本项目为纯静态站点，无构建、无框架、无数据库、零维护成本，站点部署于 EdgeOne Makers，源码托管自 <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">GitHub</a>，当前项目已开源（源码可自由使用，站内图片数据的版权归原作者所有，请勿商用），欢迎各位围观体验，喜欢的话可以给个 <a href="https://github.com/iguanren/Bing-Gallery" target="_blank" rel="noopener">Star</a>，如果你有好的建议，也可以通过 <a href="https://github.com/iguanren/Bing-Gallery/issues" target="_blank" rel="noopener">Issues</a> 向我提出。</p>
+        </div>
+    </section>
+
+    <div class="about-foot">
+        <a class="about-back" href="/" data-en="← Back to Home" data-zh="← 返回首页">← Back to Home</a>
+    </div>
+</div>
+</main>
+
+<!-- 悬浮按钮：语言切换 / 夜间模式 / 回到顶部 -->
+<div class="float-actions" id="float-actions">
+    <button id="lang-toggle" type="button" class="float-btn lang-toggle" aria-label="语言" title="语言">
+      <span class="lang-alt-zh">中</span><span class="lang-alt-en">EN</span>
+    </button>
+    <button id="night-toggle" type="button" class="float-btn" aria-label="夜间模式" title="夜间模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="display:none" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <button id="back-top" type="button" class="float-btn back-top" aria-label="回到顶部" title="回到顶部">
+        <svg class="progress-ring" width="46" height="46" viewBox="0 0 46 46" aria-hidden="true">
+            <circle class="ring-bg" cx="23" cy="23" r="21.5"></circle>
+            <circle class="ring-fg" cx="23" cy="23" r="21.5"></circle>
+        </svg>
+        <svg class="back-top-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
+</div>
+
+<footer class="site-footer">
+    <p class="footer-copy">&copy; 2019 - <span id="year">2026</span> Bing Gallery <span class="fc-keep" id="uptime"></span></p>
+</footer>
+
+<script src="about.js?v=20260911l"></script>
+</body>
+</html>
