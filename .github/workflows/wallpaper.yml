@@ -1,0 +1,104 @@
+name: Update Bing Wallpaper Data
+
+# 每天抓 3 次（对标 wdbyte）：必应切图时间不固定，多时段兜底防漏抓
+# UTC 16:30 / 0:30 / 8:30 = 北京时间 0:30 / 8:30 / 16:30
+# 另支持仓库页面手动触发（Actions → 本工作流 → Run workflow）
+
+on:
+  schedule:
+    - cron: '30 0,8,16 * * *'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: '触发原因（手动调试/补数）'
+        required: false
+        default: '手动触发'
+        type: string
+
+permissions:
+  contents: write
+  issues: write   # 失败时自动开 issue 告警（防"挂了没人知道"）
+
+# 同一时间只跑一个实例，新的会取消旧的（防手动+定时重叠）
+concurrency:
+  group: update-bing-data
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Fetch bing wallpapers
+        run: python scripts/fetch_bing.py
+
+      # 脚本自身已有写后回读校验，这里再独立验一道（双保险）
+      - name: Verify data.json
+        run: |
+          python3 - <<'PYEOF'
+          import json
+          d = json.load(open('data.json', encoding='utf-8'))
+          assert d.get('count') == len(d.get('items', [])), "count 与 items 条数不一致"
+          assert d.get('today'), "today 缺失"
+          assert d.get('updated'), "updated 缺失"
+          assert d.get('items'), "items 为空"
+          print(f"校验通过: {d.get('count')} 条, today={d.get('today')}, updated={d.get('updated')}")
+          PYEOF
+
+      # hero 状态校验：hero 字段必须是必应官方热链（自托管已废弃），非热链 → 真故障
+      - name: Verify hero image
+        run: |
+          python3 - <<'PYEOF'
+          import json, re
+          d = json.load(open('data.json'))
+          hero = next((it.get('hero') for it in d.get('items', []) if it.get('hero')), '')
+          assert hero.startswith('https://cn.bing.com/') and '_1920x1080.jpg' in hero, \
+              f"hero 字段异常: {hero!r}（应为必应 1920 热链）"
+          print(f"hero 校验通过: {hero}")
+          PYEOF
+
+      # 揉平式推送：孤儿分支重建历史 + force push 覆盖 main
+      # 效果：GitHub 仓库永远只有 1 条 commit、1 张图；旧图本体随历史销毁不残留
+      - name: Snapshot & force push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan tmp-snapshot
+          git add -A
+          git commit -m "snapshot: bing wallpaper $(TZ=Asia/Shanghai date +%Y-%m-%d)"
+          git branch -D main
+          git branch -m main
+          git push -f origin main
+          echo "已揉平推送，GitHub 仅保留最新快照"
+
+      # 任何一步失败 → 自动开 issue 告警；已有未关闭告警则跳过（防刷屏）
+      - name: Open failure issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NOW=$(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M')
+          TITLE="⚠️ 壁纸数据更新失败 ${NOW}"
+          if gh issue list --search "壁纸数据更新失败 in:title state:open" --limit 50 | grep -q .; then
+            echo "已有未关闭的告警 issue，跳过创建"
+            exit 0
+          fi
+          gh issue create --title "$TITLE" --body "壁纸数据自动更新流程运行失败，需要人工排查。
+
+          - 触发时间（北京时间）: ${NOW}
+          - 运行日志: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          点上方日志链接查看失败步骤；修好后到 Actions 页面手动 Run workflow 补数据，确认无误后关闭本 issue。"
