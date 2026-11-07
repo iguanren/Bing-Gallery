@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://iguanren.eu.org/sitemap.xml
