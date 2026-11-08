@@ -57,6 +57,11 @@ MARKETS = [
 # 同日期排序退化成"文件原有顺序"（2026-09-01 BR 顶到 CN 前的根因）
 MARKET_WEIGHT = {code.split("-")[-1]: w for code, w in MARKETS}
 
+# 必应部分市场（ROW 系）把 title 返回成占位串，入库前必须修掉，否则归档里一片 "Info"
+PLACEHOLDER_TITLES = {"", "info", "information"}
+# 标题借用优先英文市场：ROW 市场的版权文案本身就是英文，标题也应是英文
+EN_REGIONS = {"US", "GB", "IN"}
+
 
 def fetch_day(mkt: str, idx: int) -> dict | None:
     """抓取指定市场指定 idx 的必应壁纸信息，失败返回 None"""
@@ -205,6 +210,64 @@ def strip_derived(it: dict) -> dict:
     for k in DERIVED_FIELDS:
         it.pop(k, None)
     return it
+
+
+def ohr_id(urlbase: str) -> str:
+    """从 urlbase 里取图片本体 id（OHR.xxx），同一张图在所有市场共用这个 id"""
+    m = re.search(r"id=(OHR\.[^_]+)", urlbase or "")
+    return m.group(1) if m else ""
+
+
+def is_placeholder_title(title: str) -> bool:
+    return (title or "").strip().lower() in PLACEHOLDER_TITLES
+
+
+def clean_copyright_title(copyright_text: str) -> str:
+    """从版权文案里提炼一个能当标题的短句：去掉 (© 来源) 注释，过长截断"""
+    s = re.sub(r"\s*\(©[^)]*\)", "", copyright_text or "").strip()
+    s = s.strip(" .。")
+    if len(s) > 80:
+        s = s[:78].rstrip(" ,，;；") + "…"
+    return s
+
+
+def fix_placeholder_titles(items: list[dict]) -> int:
+    """把必应 ROW 系市场返回的 "Info" 占位标题换成有意义的内容。
+
+    背景：en-AU / zh-TW / ko-KR / ru-RU / ar-SA 五个市场的 HPImageArchive
+    接口把 title 返回成占位串 "Info"，照抓入库会在归档里留下一大批无意义标题
+    （实测 5 市场 × 每天 1 条，与全库同比例增长）。
+
+    修法按优先级：
+      1. 同一张图（OHR id 相同）在英文市场有正常标题 → 直接借用。这些 ROW 市场
+         本来复用的就是当日主图，借来的标题语义完全正确，不是瞎编。
+      2. 借用不到 → 从版权文案里提炼（去 (© …) 注释、超长截断）。
+    对历史数据一并生效：跑一次就把旧归档里的 "Info" 全修掉。
+
+    返回修复条数。
+    """
+    by_id_en: dict[str, str] = {}   # 英文市场标题（优先）
+    by_id_any: dict[str, str] = {}  # 任意市场的正常标题（兜底）
+    for it in items:
+        oid = ohr_id(it.get("urlbase", ""))
+        title = (it.get("title") or "").strip()
+        if not oid or is_placeholder_title(title):
+            continue
+        by_id_any.setdefault(oid, title)
+        if it.get("region") in EN_REGIONS:
+            by_id_en.setdefault(oid, title)
+
+    fixed = 0
+    for it in items:
+        if not is_placeholder_title(it.get("title")):
+            continue
+        borrowed = by_id_en.get(ohr_id(it.get("urlbase", ""))) \
+            or by_id_any.get(ohr_id(it.get("urlbase", "")))
+        new_title = borrowed or clean_copyright_title(it.get("copyright", ""))
+        if new_title:
+            it["title"] = new_title
+            fixed += 1
+    return fixed
 
 
 def compute_version(items: list[dict]) -> str:
@@ -377,6 +440,12 @@ def main():
     for item in fresh:
         strip_derived(item)
         merged[(item["date"], item["region"])] = item
+
+    # 占位标题修复：必应 ROW 系市场返回 title="Info"，用同图其他市场的标题回填，
+    # 历史归档里的旧记录一并修掉（全量遍历，不区分新旧）
+    fixed_titles = fix_placeholder_titles(list(merged.values()))
+    if fixed_titles:
+        print(f"占位标题修复：{fixed_titles} 条（必应 ROW 市场返回 \"Info\"，已回填）")
 
     today = datetime.now(BJ_TZ).strftime("%Y%m%d")   # 北京时间，避免 UTC 差一天
 

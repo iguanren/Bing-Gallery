@@ -23,7 +23,7 @@ This project grew out of an old habit. Back when I was running a blog, I liked u
 
 ## ✨ Features
 
-- **Daily auto-update** — GitHub Actions pulls from 15 markets three times a day and runs a full link health check each time; dead images are replaced automatically, so nothing gets lost
+- **Scheduled auto-update** — GitHub Actions fetches all 15 markets every 3 hours and runs a link health check on every round (full check for the last 30 days, rotating samples for older entries); dead images are flagged automatically and skipped by the front end, so nothing is lost
 - **Full-screen hero** — today's wallpaper fills the first screen, China region first with US fallback
 - **Card flow + lightbox** — the 30 most recent wallpapers; click for a 4K preview, flip with the arrow keys or by tapping the screen edges
 - **Monthly archive** — hit Archive to browse by month; everything is kept in full and never deleted
@@ -43,7 +43,7 @@ site.js                 shared logic: language / night mode / floating buttons /
 gallery.js              main page: data loading, card flow, monthly archive, lightbox
 about.js                About page: today's wallpaper, bilingual captions
 data.json               all wallpaper data (auto-generated)
-scripts/fetch_bing.py   daily fetch + link health check
+scripts/fetch_bing.py   wallpaper fetch + link health check
 .github/workflows/      scheduled auto-update
 ```
 
@@ -60,6 +60,8 @@ python3 -m http.server 8899          # preview at http://localhost:8899
 ## 📦 Deployment
 
 Connect the repository to EdgeOne Pages, bind your domain, and you're done.
+
+A note on build quota: every push triggers one EdgeOne Pages build, and the free plan includes 500 builds per month. So the workflow **fetches on a fixed schedule but only commits when the data actually changed** — fetching often, deploying on demand, without burning the quota on runs that found nothing new.
 
 ---
 

@@ -1,12 +1,18 @@
 name: Update Bing Wallpaper Data
 
-# 每天抓 3 次（对标 wdbyte）：必应切图时间不固定，多时段兜底防漏抓
-# UTC 16:30 / 0:30 / 8:30 = 北京时间 0:30 / 8:30 / 16:30
+# 每 3 小时抓一次（UTC 17 分触发）→ 每天 8 次
+# · 为什么多次：GitHub 的 schedule 在高负载时段会延迟 1~4 小时（实测记录：
+#   cron 写 0/8/16 点，实际执行漂到 5:43 / 14:28 / 23:01 / 4:25）。低频排班一旦被
+#   延迟就整班漏掉——表现为某个时区的市场当天没图。多次排班让延迟互相覆盖。
+# · 为什么不是每小时：EdgeOne Pages 免费版构建次数只有 500 次/月，而每次 push
+#   都会触发一次构建。每天 8 次最坏 240 次/月，留足手动部署余量。
+# · 关键设计：抓取 ≠ 部署。下面「Detect real change」步骤会比对数据是否真有变化，
+#   没变化就不 push、不触发 EdgeOne 构建。绝大多数抓取都是空跑。
 # 另支持仓库页面手动触发（Actions → 本工作流 → Run workflow）
 
 on:
   schedule:
-    - cron: '30 0,8,16 * * *'
+    - cron: '17 */3 * * *'
   workflow_dispatch:
     inputs:
       reason:
@@ -43,7 +49,27 @@ jobs:
         run: pip install requests
 
       - name: Fetch bing wallpapers
-        run: python scripts/fetch_bing.py
+        run: |
+          cp data.json /tmp/data.before.json
+          python scripts/fetch_bing.py
+
+      # 只在数据真有变化时才推送 —— push 会触发 EdgeOne 重新构建，
+      # 免费版构建额度 500 次/月，抓取可以勤、部署必须省。
+      # 比对只看 items（updated 时间戳每次必变，不能作为变化依据）
+      - name: Detect real change
+        id: change
+        run: |
+          python3 - <<'PYEOF'
+          import json
+          def snapshot(path):
+              d = json.load(open(path, encoding='utf-8'))
+              return json.dumps(d.get('items', []), ensure_ascii=False, sort_keys=True)
+          changed = snapshot('/tmp/data.before.json') != snapshot('data.json')
+          print('items 有实质变化 → 继续推送' if changed else 'items 无变化 → 跳过推送，不触发部署')
+          with open('/tmp/changed.txt', 'w') as f:
+              f.write('true' if changed else 'false')
+          PYEOF
+          echo "changed=$(cat /tmp/changed.txt)" >> "$GITHUB_OUTPUT"
 
       # 脚本自身已有写后回读校验，这里再独立验一道（双保险）
       - name: Verify data.json
@@ -55,6 +81,12 @@ jobs:
           assert d.get('today'), "today 缺失"
           assert d.get('updated'), "updated 缺失"
           assert d.get('items'), "items 为空"
+          # 占位标题防线：必应 ROW 市场返回 "Info"，抓取端应已回填；残留说明回填失效
+          bad = [it for it in d['items']
+                 if (it.get('title') or '').strip().lower() in ('', 'info', 'information')]
+          assert not bad, (f"仍有 {len(bad)} 条占位标题未修复"
+                           f"（例：{bad[0].get('date')} [{bad[0].get('region')}]）"
+                           if bad else "")
           print(f"校验通过: {d.get('count')} 条, today={d.get('today')}, updated={d.get('updated')}")
           PYEOF
 
@@ -70,19 +102,34 @@ jobs:
           print(f"hero 校验通过: {hero}")
           PYEOF
 
-      # 揉平式推送：孤儿分支重建历史 + force push 覆盖 main
-      # 效果：GitHub 仓库永远只有 1 条 commit、1 张图；旧图本体随历史销毁不残留
-      - name: Snapshot & force push
+      # 提交推送：平时走正常增量提交 —— 只推本次真正变化的文件，看得见 diff、能 revert
+      # 每月 1 号（北京时间）揉平一次：重建孤儿分支强推覆盖，清掉上个月累积的
+      # data.json 快照（每份约 390KB），把仓库体积拉回基线
+      - name: Commit & push
+        if: steps.change.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan tmp-snapshot
           git add -A
-          git commit -m "snapshot: bing wallpaper $(TZ=Asia/Shanghai date +%Y-%m-%d)"
-          git branch -D main
-          git branch -m main
-          git push -f origin main
-          echo "已揉平推送，GitHub 仅保留最新快照"
+          if git diff --cached --quiet; then
+            echo "工作区无文件变化，跳过提交"
+            exit 0
+          fi
+          git commit -m "data: bing wallpaper $(TZ=Asia/Shanghai date '+%Y-%m-%d %H:%M')"
+
+          if [ "$(TZ=Asia/Shanghai date +%d)" = "01" ]; then
+            echo "== 每月 1 号揉平日：重建孤儿分支，覆盖历史 =="
+            git checkout --orphan tmp-snapshot
+            git add -A
+            git commit -m "snapshot: bing wallpaper $(TZ=Asia/Shanghai date +%Y-%m-%d)（月度揉平）"
+            git branch -D main
+            git branch -m main
+            git push -f origin main
+            echo "已揉平推送，仓库历史重置为单条快照"
+          else
+            git push origin main
+            echo "已增量推送（提交内仅含本次变化的文件）"
+          fi
 
       # 任何一步失败 → 自动开 issue 告警；已有未关闭告警则跳过（防刷屏）
       - name: Open failure issue
