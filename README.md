@@ -7,7 +7,7 @@ A personal gallery of Bing's daily wallpapers — 4K, watermark-free, fully arch
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-iguanren.eu.org-brightgreen)](https://iguanren.eu.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-![Today's Bing wallpaper](https://cn.bing.com/th?id=OHR.FaceCanyon_ZH-CN9505064248_1920x1080.jpg)
+![Today's Bing wallpaper](https://cn.bing.com/th?id=OHR.VltavaPrague_ZH-CN9898139716_1920x1080.jpg)
 
 Bing releases a different official HD wallpaper every day, then quietly swaps it out the next. This project does one simple thing: keeps them.
 

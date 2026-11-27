@@ -7,7 +7,7 @@
 [![演示网站](https://img.shields.io/badge/%E6%BC%94%E7%A4%BA%E7%BD%91%E7%AB%99-iguanren.eu.org-brightgreen)](https://iguanren.eu.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-![今日必应壁纸](https://cn.bing.com/th?id=OHR.FaceCanyon_ZH-CN9505064248_1920x1080.jpg)
+![今日必应壁纸](https://cn.bing.com/th?id=OHR.VltavaPrague_ZH-CN9898139716_1920x1080.jpg)
 
 必应每天都会放出一张官方高清壁纸，第二天却悄悄换掉。本项目做的事很简单：把它们留下来。
 
